@@ -6,35 +6,43 @@
 // Copyright (c) 2023 Jellyfin & Jellyfin Contributors
 //
 
+import AlwaysPopover
 import SwiftUI
 
 struct LongPressResetModifier<Value>: ViewModifier {
     
-    let binding: Binding<Value>
-    let toValue: Value
-    
     @State
     private var flashing = false
+    @State
+    private var isPresentingPopover = false
+    
+    let binding: Binding<Value>
+    let toValue: Value
     
     func body(content: Content) -> some View {
         ZStack {
             Color.clear
                 .contentShape(Rectangle())
                 .onLongPressGesture {
-                    binding.wrappedValue = toValue
-                    
-                    flashing = true
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        self.flashing = false
-                    }
+                    isPresentingPopover = true
                 }
             
             content
         }
-        .listRowBackground(
-            Color(flashing ? UIColor.secondarySystemBackground : UIColor.systemBackground)
-                .animation(.linear(duration: flashing ? 0.2 : 0.4), value: flashing)
-        )
+        .alwaysPopover(isPresented: $isPresentingPopover) {
+            Button {
+                binding.wrappedValue = toValue
+                isPresentingPopover = false
+                flashing = true
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.flashing = false
+                }
+            } label: {
+                Text("Reset")
+                    .padding()
+                    .background(Color.secondary)
+            }
+        }
     }
 }

@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "alwayspopover",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/LePips/AlwaysPopover",
+      "state" : {
+        "revision" : "b12bc8168eca40f109e20e6f7399143288bdb6a7",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "blurhashkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/LePips/BlurHashKit",

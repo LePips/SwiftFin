@@ -457,6 +457,8 @@
 		E17AC9712954F636003D2BC2 /* DownloadListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17AC9702954F636003D2BC2 /* DownloadListCoordinator.swift */; };
 		E17AC9732955007A003D2BC2 /* DownloadTaskButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17AC9722955007A003D2BC2 /* DownloadTaskButton.swift */; };
 		E17B0EA72B004ADE002A394F /* LongPressResetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17B0EA62B004ADE002A394F /* LongPressResetModifier.swift */; };
+		E17B0EA92B00639D002A394F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17B0EA82B00639D002A394F /* UIView.swift */; };
+		E17B0EAA2B00639D002A394F /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17B0EA82B00639D002A394F /* UIView.swift */; };
 		E17FB54F28C1197700311DFE /* SelectorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17FB54E28C1197700311DFE /* SelectorType.swift */; };
 		E17FB55228C119D400311DFE /* Displayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17FB55128C119D400311DFE /* Displayable.swift */; };
 		E17FB55528C1250B00311DFE /* SimilarItemsHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17FB55428C1250B00311DFE /* SimilarItemsHStack.swift */; };
@@ -610,6 +612,7 @@
 		E1BDF2F929524FDA00CC0294 /* PlayPreviousItemActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BDF2F829524FDA00CC0294 /* PlayPreviousItemActionButton.swift */; };
 		E1BDF2FB2952502300CC0294 /* SubtitleActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BDF2FA2952502300CC0294 /* SubtitleActionButton.swift */; };
 		E1BDF31729525F0400CC0294 /* AdvancedActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BDF31629525F0400CC0294 /* AdvancedActionButton.swift */; };
+		E1C230652B008AFA00979D4E /* AlwaysPopover in Frameworks */ = {isa = PBXBuildFile; productRef = E1C230642B008AFA00979D4E /* AlwaysPopover */; };
 		E1C812BC277A8E5D00918266 /* PlaybackSpeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C812B4277A8E5D00918266 /* PlaybackSpeed.swift */; };
 		E1C812C5277A90B200918266 /* URLComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C812C4277A90B200918266 /* URLComponents.swift */; };
 		E1C8CE5B28FE512400DF5D7B /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C8CE5A28FE512400DF5D7B /* CGPoint.swift */; };
@@ -1086,6 +1089,7 @@
 		E17AC9702954F636003D2BC2 /* DownloadListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadListCoordinator.swift; sourceTree = "<group>"; };
 		E17AC9722955007A003D2BC2 /* DownloadTaskButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTaskButton.swift; sourceTree = "<group>"; };
 		E17B0EA62B004ADE002A394F /* LongPressResetModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongPressResetModifier.swift; sourceTree = "<group>"; };
+		E17B0EA82B00639D002A394F /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		E17FB54E28C1197700311DFE /* SelectorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorType.swift; sourceTree = "<group>"; };
 		E17FB55128C119D400311DFE /* Displayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Displayable.swift; sourceTree = "<group>"; };
 		E17FB55428C1250B00311DFE /* SimilarItemsHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarItemsHStack.swift; sourceTree = "<group>"; };
@@ -1374,6 +1378,7 @@
 				62666E0E27E501AF00EC0ECD /* Security.framework in Frameworks */,
 				E1DC9814296DC06200982F06 /* PulseLogHandler in Frameworks */,
 				E1B2AB9928808E150072B3B9 /* GoogleCast.xcframework in Frameworks */,
+				E1C230652B008AFA00979D4E /* AlwaysPopover in Frameworks */,
 				E1DC9821296DDBE600982F06 /* CollectionView in Frameworks */,
 				62666DFE27E5015700EC0ECD /* AVFoundation.framework in Frameworks */,
 				62666DFD27E5014F00EC0ECD /* AudioToolbox.framework in Frameworks */,
@@ -1876,6 +1881,7 @@
 				E1E0BEB629EF450B0002E8D3 /* UIGestureRecognizer.swift */,
 				E1937A3D288F0D3D00CB80AA /* UIScreen.swift */,
 				E18E0239288749540022598C /* UIScrollView.swift */,
+				E17B0EA82B00639D002A394F /* UIView.swift */,
 				62E1DCC2273CE19800C9AE76 /* URL.swift */,
 				E1C812C4277A90B200918266 /* URLComponents.swift */,
 				E17AC9692954D00E003D2BC2 /* URLResponse.swift */,
@@ -2893,6 +2899,7 @@
 				E1DC9820296DDBE600982F06 /* CollectionView */,
 				E1FAD1C52A0375BA007F5521 /* UDPBroadcast */,
 				E14CB6852A9FF62A001586C6 /* JellyfinAPI */,
+				E1C230642B008AFA00979D4E /* AlwaysPopover */,
 			);
 			productName = JellyfinPlayer;
 			productReference = 5377CBF1263B596A003A4E83 /* Swiftfin iOS.app */;
@@ -2961,6 +2968,7 @@
 				E1DC981F296DDBE600982F06 /* XCRemoteSwiftPackageReference "CollectionView" */,
 				E1FAD1C42A0375BA007F5521 /* XCRemoteSwiftPackageReference "UDPBroadcastConnection" */,
 				E14CB6842A9FF62A001586C6 /* XCRemoteSwiftPackageReference "jellyfin-sdk-swift" */,
+				E1C230632B008AFA00979D4E /* XCRemoteSwiftPackageReference "AlwaysPopover" */,
 			);
 			productRefGroup = 5377CBF2263B596A003A4E83 /* Products */;
 			projectDirPath = "";
@@ -3087,6 +3095,7 @@
 				E1575E96293E7B1E001665B1 /* UIScrollView.swift in Sources */,
 				E11E376D293E9CC1009EF240 /* VideoPlayerCoordinator.swift in Sources */,
 				E1575E6F293E77B5001665B1 /* GestureAction.swift in Sources */,
+				E17B0EAA2B00639D002A394F /* UIView.swift in Sources */,
 				E18A8E7E28D606BE00333B9A /* BaseItemDto+VideoPlayerViewModel.swift in Sources */,
 				E1E6C43B29AECBD30064123F /* BottomBarView.swift in Sources */,
 				E152107D2947ACA000375CC2 /* InvertedLightAppIcon.swift in Sources */,
@@ -3421,6 +3430,7 @@
 				E17AC96A2954D00E003D2BC2 /* URLResponse.swift in Sources */,
 				625CB5772678C34300530A6E /* ConnectToServerViewModel.swift in Sources */,
 				E154966A296CA2EF00C4EF88 /* DownloadManager.swift in Sources */,
+				E17B0EA92B00639D002A394F /* UIView.swift in Sources */,
 				C4BE07852728446F003F4AD1 /* LiveTVChannelsViewModel.swift in Sources */,
 				E133328829538D8D00EE76AB /* Files.swift in Sources */,
 				E1D3043228D175CE00587289 /* StaticLibraryViewModel.swift in Sources */,
@@ -4234,6 +4244,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E1C230632B008AFA00979D4E /* XCRemoteSwiftPackageReference "AlwaysPopover" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LePips/AlwaysPopover";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		E1DC9812296DC06200982F06 /* XCRemoteSwiftPackageReference "PulseLogHandler" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/PulseLogHandler";
@@ -4455,6 +4473,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E19DDEC52948EF9900954E10 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		E1C230642B008AFA00979D4E /* AlwaysPopover */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C230632B008AFA00979D4E /* XCRemoteSwiftPackageReference "AlwaysPopover" */;
+			productName = AlwaysPopover;
 		};
 		E1DC9813296DC06200982F06 /* PulseLogHandler */ = {
 			isa = XCSwiftPackageProductDependency;

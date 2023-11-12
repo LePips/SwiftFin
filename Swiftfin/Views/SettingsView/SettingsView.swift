@@ -82,6 +82,7 @@ struct SettingsView: View {
 
             Section {
                 EnumPicker(title: L10n.appearance, selection: $appAppearance)
+                    .longPressReset($appAppearance, to: .system)
 
                 // TODO: make defaults binding for current AppIcon
                 ChevronButton(title: L10n.appIcon)

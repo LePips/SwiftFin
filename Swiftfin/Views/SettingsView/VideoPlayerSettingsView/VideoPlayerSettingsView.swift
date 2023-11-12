@@ -128,6 +128,7 @@ struct VideoPlayerSettingsView: View {
                     .onSelect {
                         router.route(to: \.fontPicker, $subtitleFontName)
                     }
+                    .longPressReset($subtitleFontName, to: UIFont.systemFont(ofSize: 14).fontName)
 
                 BasicStepper(
                     title: L10n.subtitleSize,

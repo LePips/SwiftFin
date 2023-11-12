@@ -8,8 +8,7 @@
 
 import SwiftUI
 
-// TODO: Look at name spacing
-// TODO: Consistent naming: ...Key
+// TODO: look at macro that defines the key and EnvironmentValues extension
 
 struct AudioOffset: EnvironmentKey {
     static let defaultValue: Binding<Int> = .constant(0)

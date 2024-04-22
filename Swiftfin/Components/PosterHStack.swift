@@ -14,7 +14,7 @@ struct PosterHStack<Item: Poster>: View {
 
     private var header: () -> any View
     private var title: String?
-    private var type: PosterType
+    private var type: PosterDisplayType
     private var items: Binding<OrderedSet<Item>>
     private var singleImage: Bool
     private var content: (Item) -> any View
@@ -41,8 +41,8 @@ struct PosterHStack<Item: Poster>: View {
         }
         .clipsToBounds(false)
         .dataPrefix(20)
-        .insets(horizontal: EdgeInsets.defaultEdgePadding)
-        .itemSpacing(EdgeInsets.defaultEdgePadding / 2)
+        .insets(horizontal: EdgeInsets.edgePadding)
+        .itemSpacing(EdgeInsets.edgePadding / 2)
         .scrollBehavior(.continuousLeadingEdge)
     }
 
@@ -64,8 +64,8 @@ struct PosterHStack<Item: Poster>: View {
         }
         .clipsToBounds(false)
         .dataPrefix(20)
-        .insets(horizontal: EdgeInsets.defaultEdgePadding)
-        .itemSpacing(EdgeInsets.defaultEdgePadding / 2)
+        .insets(horizontal: EdgeInsets.edgePadding)
+        .itemSpacing(EdgeInsets.edgePadding / 2)
         .scrollBehavior(.continuousLeadingEdge)
     }
 
@@ -96,7 +96,7 @@ extension PosterHStack {
 
     init(
         title: String? = nil,
-        type: PosterType,
+        type: PosterDisplayType,
         items: Binding<OrderedSet<Item>>,
         singleImage: Bool = false
     ) {
@@ -116,7 +116,7 @@ extension PosterHStack {
 
     init<S: Sequence<Item>>(
         title: String? = nil,
-        type: PosterType,
+        type: PosterDisplayType,
         items: S,
         singleImage: Bool = false
     ) {

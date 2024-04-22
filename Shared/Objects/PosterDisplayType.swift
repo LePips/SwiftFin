@@ -17,7 +17,7 @@ import SwiftUI
 // TODO: after no longer experimental, nest under `Poster`?
 //       tracker: https://github.com/apple/swift-evolution/blob/main/proposals/0404-nested-protocols.md
 
-enum PosterType: String, CaseIterable, Displayable, Defaults.Serializable {
+enum PosterDisplayType: String, CaseIterable, Displayable, Defaults.Serializable {
 
     case landscape
     case portrait

@@ -124,10 +124,6 @@ extension ImageView {
         copy(modifying: \.image, with: content)
     }
 
-    func placeholder(@ViewBuilder _ content: @escaping () -> any View) -> Self {
-        copy(modifying: \.placeholder, with: { _ in content() })
-    }
-
     func placeholder(@ViewBuilder _ content: @escaping (ImageSource) -> any View) -> Self {
         copy(modifying: \.placeholder, with: content)
     }

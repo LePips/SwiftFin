@@ -98,7 +98,7 @@ struct PagingLibraryView<Element: Poster>: View {
     // MARK: layout
 
     private static func padLayout(
-        posterType: PosterType,
+        posterType: PosterDisplayType,
         viewType: LibraryViewType,
         listColumnCount: Int
     ) -> CollectionVGridLayout {
@@ -113,7 +113,7 @@ struct PagingLibraryView<Element: Poster>: View {
     }
 
     private static func phoneLayout(
-        posterType: PosterType,
+        posterType: PosterDisplayType,
         viewType: LibraryViewType
     ) -> CollectionVGridLayout {
         switch (posterType, viewType) {

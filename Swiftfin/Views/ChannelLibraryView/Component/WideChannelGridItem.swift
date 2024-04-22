@@ -48,7 +48,7 @@ extension ChannelLibraryView {
                                 .background(color: .clear)
                                 .imageFrameRatio(width: 2, height: 2)
                         }
-                        .placeholder {
+                        .placeholder { _ in
                             EmptyView()
                         }
                         .padding(2)
@@ -116,7 +116,7 @@ extension ChannelLibraryView {
                 Button {
                     onSelect()
                 } label: {
-                    HStack(alignment: .center, spacing: EdgeInsets.defaultEdgePadding) {
+                    HStack(alignment: .center, spacing: EdgeInsets.edgePadding) {
 
                         channelLogo
                             .frame(width: 80)

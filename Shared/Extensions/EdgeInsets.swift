@@ -13,7 +13,7 @@ extension EdgeInsets {
     // TODO: tvOS
     /// The default padding for View's against contextual edges,
     /// typically the edges of the View's scene
-    static let defaultEdgePadding: CGFloat = {
+    static let edgePadding: CGFloat = {
         #if os(tvOS)
         50
         #else
@@ -25,7 +25,7 @@ extension EdgeInsets {
         #endif
     }()
 
-    static let DefaultEdgeInsets: EdgeInsets = .init(defaultEdgePadding)
+    static let edgeInsets: EdgeInsets = .init(edgePadding)
 
     init(_ constant: CGFloat) {
         self.init(top: constant, leading: constant, bottom: constant, trailing: constant)

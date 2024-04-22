@@ -91,7 +91,7 @@ extension View {
 
     /// Applies the aspect ratio and corner radius for the given `PosterType`
     @ViewBuilder
-    func posterStyle(_ type: PosterType, contentMode: ContentMode = .fill) -> some View {
+    func posterStyle(_ type: PosterDisplayType, contentMode: ContentMode = .fill) -> some View {
         switch type {
         case .portrait:
             aspectRatio(2 / 3, contentMode: contentMode)
@@ -276,7 +276,7 @@ extension View {
     }
 
     func edgePadding(_ edges: Edge.Set = .all) -> some View {
-        padding(edges, EdgeInsets.defaultEdgePadding)
+        padding(edges, EdgeInsets.edgePadding)
     }
 
     var backport: Backport<Self> {

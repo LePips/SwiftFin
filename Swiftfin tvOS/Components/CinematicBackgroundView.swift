@@ -27,7 +27,7 @@ struct CinematicBackgroundView<Item: Poster>: View {
             .onChange(of: viewModel.currentItem) { newItem in
                 proxy.update {
                     ImageView(newItem?.cinematicPosterImageSources() ?? [])
-                        .placeholder {
+                        .placeholder { _ in
                             Color.clear
                         }
                         .failure {

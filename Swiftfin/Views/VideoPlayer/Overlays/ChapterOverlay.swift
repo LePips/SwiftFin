@@ -75,7 +75,7 @@ extension VideoPlayer.Overlay {
                 ) { chapter in
                     ChapterButton(chapter: chapter)
                 }
-                .insets(horizontal: EdgeInsets.defaultEdgePadding, vertical: EdgeInsets.defaultEdgePadding)
+                .insets(horizontal: EdgeInsets.edgePadding, vertical: EdgeInsets.edgePadding)
                 .proxy(collectionHStackProxy)
                 .onChange(of: currentOverlayType) { newValue in
                     guard newValue == .chapters else { return }

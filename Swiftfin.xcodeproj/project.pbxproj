@@ -4307,7 +4307,6 @@
 				E1D3044428D1991900587289 /* LibraryViewTypeToggle.swift in Sources */,
 				C45C36542A8B1F2C003DAE46 /* LiveVideoPlayerManager.swift in Sources */,
 				E148128B28C15526003B8787 /* ItemSortBy.swift in Sources */,
-				E148128B28C15526003B8787 /* ItemSortBy.swift in Sources */,
 				E10231412BCF8A3C009D71FC /* ChannelLibraryView.swift in Sources */,
 				E1F0204E26CCCA74001C1C3B /* VideoPlayerJumpLength.swift in Sources */,
 				E1A3E4CB2BB74EFD005C59F8 /* EpisodeHStack.swift in Sources */,

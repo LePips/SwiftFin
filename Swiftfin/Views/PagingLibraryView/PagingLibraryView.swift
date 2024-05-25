@@ -60,6 +60,8 @@ struct PagingLibraryView<Element: Poster>: View {
 
     @State
     private var layout: CollectionVGridLayout
+    @State
+    private var safeArea: EdgeInsets = .zero
 
     @StoredValue
     private var displayType: LibraryDisplayType
@@ -264,11 +266,15 @@ struct PagingLibraryView<Element: Poster>: View {
                 HStack(spacing: 0) {
                     content
                         .frame(maxWidth: .infinity)
+
                     LetterPickerBar(viewModel: viewModel.filterViewModel!)
+                        .padding(.top, safeArea.top)
+                        .padding(.bottom, safeArea.bottom)
                 }
             case .leading:
                 HStack(spacing: 0) {
                     LetterPickerBar(viewModel: viewModel.filterViewModel!)
+
                     content
                         .frame(maxWidth: .infinity)
                 }
@@ -299,6 +305,9 @@ struct PagingLibraryView<Element: Poster>: View {
         }
         .animation(.linear(duration: 0.1), value: viewModel.state)
         .ignoresSafeArea()
+        .onSizeChanged { _, safeArea in
+            self.safeArea = safeArea
+        }
         .navigationTitle(viewModel.parent?.displayTitle ?? "")
         .navigationBarTitleDisplayMode(.inline)
         .ifLet(viewModel.filterViewModel) { view, filterViewModel in

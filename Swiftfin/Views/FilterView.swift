@@ -24,6 +24,10 @@ struct FilterView: View {
     @ObservedObject
     private var viewModel: FilterViewModel
 
+    // workaround for `BindingBox` used in `SelectorView`
+    @State
+    private var id = UUID()
+
     private let type: ItemFilterType
 
     var body: some View {
@@ -32,6 +36,7 @@ struct FilterView: View {
             sources: viewModel.allFilters[keyPath: type.collectionAnyKeyPath],
             type: type.selectorType
         )
+        .id(id)
         .navigationTitle(type.displayTitle)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarCloseButton {
@@ -55,6 +60,8 @@ struct FilterView: View {
                 case .years:
                     viewModel.currentFilters.years = ItemFilterCollection.default.years
                 }
+
+                id = UUID()
             }
             .environment(
                 \.isEnabled,

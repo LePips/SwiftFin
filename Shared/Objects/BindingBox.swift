@@ -9,6 +9,8 @@
 import Combine
 import SwiftUI
 
+// TODO: make a property wrapper instead
+
 /// Utility for views that are passed a `Binding` that
 /// may not be able to respond to view updates from
 /// the source

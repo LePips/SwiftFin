@@ -174,9 +174,9 @@ extension Defaults.Keys {
                 default: true
             )
 
-            static let maxNextUp: Key<Int> = UserKey(
+            static let maxNextUp: Key<TimeInterval> = UserKey(
                 "homeMaxNextUp",
-                default: 365
+                default: 366 * 86_400
             )
 
             static let enableRewatching: Key<Bool> = UserKey(

@@ -23,13 +23,14 @@ extension ItemView {
                 // MARK: - Toggle Played
 
                 ActionButton(
+                    title: "Played",
                     icon: "checkmark.circle",
-                    selectedIcon: "checkmark.circle.fill",
-                    color: Color.jellyfinPurple
+                    selectedIcon: "checkmark.circle.fill"
                 ) {
                     viewModel.send(.toggleIsPlayed)
                 }
-                .environment(\.isSelected, viewModel.item.userData?.isPlayed == true)
+                .foregroundStyle(.purple)
+                .environment(\.isSelected, viewModel.item.userData?.isPlayed ?? false)
                 .frame(height: 100)
                 .frame(maxWidth: .infinity)
 
@@ -38,13 +39,14 @@ extension ItemView {
                 // MARK: - Toggle Favorite
 
                 ActionButton(
+                    title: "Favorited",
                     icon: "heart.circle",
-                    selectedIcon: "heart.circle.fill",
-                    color: .pink
+                    selectedIcon: "heart.circle.fill"
                 ) {
                     viewModel.send(.toggleIsFavorite)
                 }
-                .environment(\.isSelected, viewModel.item.userData?.isFavorite == true)
+                .foregroundStyle(.pink)
+                .environment(\.isSelected, viewModel.item.userData?.isFavorite ?? false)
                 .frame(height: 100)
                 .frame(maxWidth: .infinity)
 

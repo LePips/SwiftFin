@@ -59,6 +59,8 @@ struct SelectUserView: View {
     @State
     private var selectedUsers: Set<UserState> = []
     @State
+    private var settingsMenuSize: CGSize = .zero
+    @State
     private var splashScreenImageSource: ImageSource? = nil
 
     // MARK: - Dialog States
@@ -228,12 +230,24 @@ struct SelectUserView: View {
                 .scrollViewOffset($scrollViewOffset)
             }
 
-            HStack {
+            HStack(alignment: .center) {
                 ServerSelectionMenu(
                     selection: $serverSelection,
                     viewModel: viewModel
                 )
+
+                advancedMenu
+                    .labelStyle(.iconOnly)
             }
+
+//            VStack {
+//                ServerSelectionMenu(
+//                    selection: $serverSelection,
+//                    viewModel: viewModel
+//                )
+//
+//                advancedMenu
+//            }
         }
         .animation(.linear(duration: 0.1), value: scrollViewOffset)
         .background {
@@ -296,6 +310,8 @@ struct SelectUserView: View {
     private var advancedMenu: some View {
         Menu(L10n.advanced, systemImage: "gearshape.fill") {
 
+            Button("Test") {}
+
             Section {
                 if gridItems.count > 1 {
                     Button(L10n.editUsers, systemImage: "person.crop.circle") {
@@ -339,29 +355,29 @@ struct SelectUserView: View {
             }
         }
         .ignoresSafeArea()
-        .topBarTrailing {
-            if isEditingUsers {
-                Button {
-                    isEditingUsers = false
-                } label: {
-                    L10n.cancel.text
-                        .font(.headline)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background {
-                            if colorScheme == .light {
-                                Color.secondarySystemFill
-                            } else {
-                                Color.tertiarySystemFill
-                            }
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                }
-                .buttonStyle(.plain)
-            } else {
-                advancedMenu
-            }
-        }
+//        .topBarTrailing {
+//            if isEditingUsers {
+//                Button {
+//                    isEditingUsers = false
+//                } label: {
+//                    L10n.cancel.text
+//                        .font(.headline)
+//                        .padding(.vertical, 5)
+//                        .padding(.horizontal, 10)
+//                        .background {
+//                            if colorScheme == .light {
+//                                Color.secondarySystemFill
+//                            } else {
+//                                Color.tertiarySystemFill
+//                            }
+//                        }
+//                        .clipShape(RoundedRectangle(cornerRadius: 10))
+//                }
+//                .buttonStyle(.plain)
+//            } else {
+//                advancedMenu
+//            }
+//        }
         .onAppear {
             didAppear()
         }

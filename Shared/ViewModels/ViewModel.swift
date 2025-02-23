@@ -26,6 +26,9 @@ class ViewModel: ObservableObject {
     @Injected(\.currentUserSession)
     var userSession: UserSession!
 
+    @Published
+    var error: Error?
+
     var cancellables = Set<AnyCancellable>()
 
     private var userSessionResolverCancellable: AnyCancellable?

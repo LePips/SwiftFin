@@ -22,8 +22,7 @@ class ServerCheckViewModel: ViewModel, Stateful {
     enum State: Hashable {
         case connecting
         case connected
-        case error(JellyfinAPIError)
-        case loginInvalidated
+        case error
         case initial
     }
 
@@ -50,13 +49,10 @@ class ServerCheckViewModel: ViewModel, Stateful {
                         self.state = .connected
                         Container.shared.currentUserSession.reset()
                     }
-                } catch let Get.APIError.unacceptableStatusCode(code) where code == 401 {
-                    await MainActor.run {
-                        self.state = .loginInvalidated
-                    }
                 } catch {
                     await MainActor.run {
-                        self.state = .error(.init(error.localizedDescription))
+                        self.state = .error
+                        self.error = error
                     }
                 }
             }

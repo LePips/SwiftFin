@@ -14,7 +14,7 @@ class ToastProxy: ObservableObject {
     @Published
     private(set) var isPresenting: Bool = false
     @Published
-    private(set) var systemName: String? = nil
+    private(set) var systemName: String?
     @Published
     private(set) var title: Text = Text("")
     @Published

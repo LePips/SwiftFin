@@ -120,8 +120,6 @@ extension VideoPlayer {
     }
 }
 
-import VLCUI
-
 struct VideoPlayer_Overlay_Previews: PreviewProvider {
 
     static var previews: some View {

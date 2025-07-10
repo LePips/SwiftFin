@@ -100,7 +100,7 @@ class UINativeVideoPlayerViewController: AVPlayerViewController {
     // TODO: get metadata from playback item
     private func createAVMetadata(for item: BaseItemDto) -> [AVMetadataItem] {
         let title: String
-        var subtitle: String? = nil
+        var subtitle: String?
         let description = item.overview
 
         if item.type == .episode,

@@ -17,14 +17,14 @@ import VLCUI
 class MediaPlayerItem: ViewModel, MediaPlayerListener {
 
     @Published
-    var selectedAudioStreamIndex: Int? = nil {
+    var selectedAudioStreamIndex: Int? {
         didSet {
             manager?.proxy?.setAudioStream(.init(index: selectedAudioStreamIndex))
         }
     }
 
     @Published
-    var selectedSubtitleStreamIndex: Int? = nil {
+    var selectedSubtitleStreamIndex: Int? {
         didSet {
             manager?.proxy?.setSubtitleStream(.init(index: selectedSubtitleStreamIndex))
         }

@@ -97,11 +97,11 @@ class EpisodeMediaPlayerQueue: ViewModel, MediaPlayerQueue {
 //                    selection = viewModel.seasons.first?.id
 //                }
 //            }
-            .onChange(of: selection) { newValue in
-                guard let newValue else {
-                    manager.queue?.items.removeAll()
-                    return
-                }
+            .onChange(of: selection) { _ in
+//                guard let newValue else {
+//                    manager.queue?.items.removeAll()
+//                    return
+//                }
 
 //                manager.queue?.items =
             }

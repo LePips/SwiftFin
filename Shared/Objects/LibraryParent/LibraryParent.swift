@@ -10,6 +10,8 @@ import JellyfinAPI
 
 protocol LibraryParent: Displayable, Hashable, Identifiable<String?> {
 
+    var groupings: [LibraryGrouping]? { get }
+
     /// The type of the library, reusing `BaseItemKind` for some
     /// ease of provided variety like `folder` and `userView`.
     var libraryType: BaseItemKind? { get }
@@ -26,6 +28,10 @@ protocol LibraryParent: Displayable, Hashable, Identifiable<String?> {
 }
 
 extension LibraryParent {
+
+    var groupings: [LibraryGrouping]? {
+        nil
+    }
 
     var supportedItemTypes: [BaseItemKind] {
         switch libraryType {

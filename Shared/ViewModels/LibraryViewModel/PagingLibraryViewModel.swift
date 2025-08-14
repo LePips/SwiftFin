@@ -75,6 +75,9 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
         case refresh
         case getNextPage
         case getRandomItem
+
+        case refreshWith(environment: [String: String])
+        case getNextPageWith(environment: [String: String])
     }
 
     // MARK: BackgroundState
@@ -277,6 +280,34 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
             .asAnyCancellable()
 
             return .refreshing
+        case let .refreshWith(environment: environment):
+            pagingTask?.cancel()
+            randomItemTask?.cancel()
+
+            filterViewModel?.send(.getQueryFilters)
+
+            pagingTask = Task { [weak self] in
+                guard let self else { return }
+
+                do {
+                    try await self.refresh(environment: environment)
+
+                    guard !Task.isCancelled else { return }
+
+                    await MainActor.run {
+                        self.state = .content
+                    }
+                } catch {
+                    guard !Task.isCancelled else { return }
+
+                    await MainActor.run {
+                        self.send(.error(.init(error.localizedDescription)))
+                    }
+                }
+            }
+            .asAnyCancellable()
+
+            return .refreshing
         case .getNextPage:
 
             guard hasNextPage else { return state }
@@ -305,6 +336,32 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
             .asAnyCancellable()
 
             return .content
+        case let .getNextPageWith(environment: environment):
+            guard hasNextPage else { return state }
+
+            backgroundStates.insert(.gettingNextPage)
+
+            pagingTask = Task { [weak self] in
+                do {
+                    try await self?.getNextPage(environment: environment)
+
+                    guard !Task.isCancelled else { return }
+
+                    await MainActor.run {
+                        self?.backgroundStates.remove(.gettingNextPage)
+                        self?.state = .content
+                    }
+                } catch {
+                    guard !Task.isCancelled else { return }
+
+                    await MainActor.run {
+                        self?.backgroundStates.remove(.gettingNextPage)
+                        self?.state = .error(.init(error.localizedDescription))
+                    }
+                }
+            }
+            .asAnyCancellable()
+            return .content
         case .getRandomItem:
 
             randomItemTask = Task { [weak self] in
@@ -327,7 +384,7 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
 
     // MARK: refresh
 
-    final func refresh() async throws {
+    final func refresh(environment: [String: String] = [:]) async throws {
 
         currentPage = -1
         hasNextPage = true
@@ -336,7 +393,7 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
             elements.removeAll()
         }
 
-        try await getNextPage()
+        try await getNextPage(environment: environment)
     }
 
     /// Gets the next page of items or immediately returns if
@@ -344,12 +401,12 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
     ///
     /// See `get(page:)` for the conditions that determine
     /// if there is a next page or not.
-    final func getNextPage() async throws {
+    final func getNextPage(environment: [String: String] = [:]) async throws {
         guard hasNextPage else { return }
 
         currentPage += 1
 
-        let pageItems = try await get(page: currentPage)
+        let pageItems = try await get(page: currentPage, environment: environment)
 
         hasNextPage = !(pageItems.count < DefaultPageSize)
 
@@ -358,12 +415,17 @@ class PagingLibraryViewModel<Element: Poster>: ViewModel, Eventful, Stateful {
         }
     }
 
+    func get(page: Int, environment: [String: String]) async throws -> [Element] {
+        []
+    }
+
     /// Gets the items at the given page. If the number of items
     /// is less than `DefaultPageSize`, then it is inferred that
     /// there is not a next page and subsequent calls to `getNextPage`
     /// will immediately return.
     func get(page: Int) async throws -> [Element] {
-        []
+//        []
+        try await get(page: page, environment: [:])
     }
 
     /// Gets a random item from `elements`. Override if item should

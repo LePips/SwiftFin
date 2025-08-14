@@ -63,6 +63,8 @@ struct PagingLibraryView<Element: Poster>: View {
     private var router
 
     @State
+    private var environment: [String: String] = [:]
+    @State
     private var layout: CollectionVGridLayout
     @State
     private var safeArea: EdgeInsets = .zero
@@ -115,6 +117,8 @@ struct PagingLibraryView<Element: Poster>: View {
                 listColumnCount: initialListColumnCount
             )
         }
+
+        environment["grouping"] = viewModel.parent?.groupings?.first?.id
     }
 
     // MARK: onSelect
@@ -461,6 +465,26 @@ struct PagingLibraryView<Element: Poster>: View {
                     viewType: $defaultDisplayType,
                     listColumnCount: $defaultListColumnCount
                 )
+            }
+
+            if let groupings = viewModel.parent?.groupings {
+                Picker(
+                    "Groups",
+                    selection: .init(
+                        get: { environment["grouping"] ?? groupings.first!.id
+                        },
+                        set: { id in
+                            environment["grouping"] = id
+                            viewModel.send(.refreshWith(environment: environment))
+                        }
+                    )
+                ) {
+                    ForEach(groupings) { grouping in
+                        Text(grouping.id)
+                            .tag(grouping.id)
+                    }
+                }
+                .pickerStyle(.menu)
             }
 
             Button(L10n.random, systemImage: "dice.fill") {

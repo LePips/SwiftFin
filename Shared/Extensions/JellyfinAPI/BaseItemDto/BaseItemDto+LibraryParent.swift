@@ -8,10 +8,54 @@
 
 import JellyfinAPI
 
+struct LibraryGrouping: Identifiable, Storable {
+    let id: String
+}
+
 extension BaseItemDto: LibraryParent {
+
+    var groupings: [LibraryGrouping]? {
+        guard collectionType == .tvshows else { return nil }
+        return [
+            .init(id: "Shows"),
+            .init(id: "Episodes"),
+        ]
+    }
 
     var libraryType: BaseItemKind? {
         type
+    }
+
+    func AsupportedItemTypes(for grouping: LibraryGrouping?) -> [BaseItemKind] {
+        guard let collectionType else { return [] }
+
+        switch (collectionType, libraryType) {
+        case (_, .folder):
+            return BaseItemKind.supportedCases
+                .appending([.folder, .collectionFolder])
+        case (.movies, _):
+            return [.movie]
+        case (.tvshows, _):
+            if let grouping, grouping.id == "Episodes" {
+                return [.episode]
+            } else {
+                return [.series]
+            }
+        case (.boxsets, _):
+            return BaseItemKind.supportedCases
+        default:
+            return BaseItemKind.supportedCases
+        }
+    }
+
+    func AisRecursiveCollection(for grouping: LibraryGrouping?) -> Bool {
+        guard let collectionType, libraryType != .userView else { return true }
+
+        if let grouping, grouping.id == "Episodes" {
+            return true
+        }
+
+        return ![.tvshows, .boxsets].contains(collectionType)
     }
 
     var supportedItemTypes: [BaseItemKind] {

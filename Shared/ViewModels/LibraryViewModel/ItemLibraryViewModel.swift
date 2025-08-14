@@ -17,9 +17,12 @@ final class ItemLibraryViewModel: PagingLibraryViewModel<BaseItemDto> {
 
     // MARK: get
 
-    override func get(page: Int) async throws -> [BaseItemDto] {
+    override func get(page: Int, environment: [String: String]) async throws -> [BaseItemDto] {
 
-        let parameters = itemParameters(for: page)
+        let grouping: LibraryGrouping? = environment["grouping"]
+            .flatMap { LibraryGrouping(id: $0) }
+
+        let parameters = itemParameters(for: page, grouping: grouping)
         let request = Paths.getItemsByUserID(userID: userSession.user.id, parameters: parameters)
         let response = try await userSession.client.send(request)
 
@@ -48,7 +51,7 @@ final class ItemLibraryViewModel: PagingLibraryViewModel<BaseItemDto> {
 
     // MARK: item parameters
 
-    private func itemParameters(for page: Int?) -> Paths.GetItemsByUserIDParameters {
+    private func itemParameters(for page: Int?, grouping: LibraryGrouping? = nil) -> Paths.GetItemsByUserIDParameters {
 
         var parameters = Paths.GetItemsByUserIDParameters()
 
@@ -62,11 +65,13 @@ final class ItemLibraryViewModel: PagingLibraryViewModel<BaseItemDto> {
         parameters.sortBy = [ItemSortBy.name.rawValue]
 
         /// Recursive should only apply to parents/folders and not to baseItems
-        parameters.isRecursive = (parent as? BaseItemDto)?.isRecursiveCollection ?? true
+        parameters.isRecursive = (parent as? BaseItemDto)?.AisRecursiveCollection(for: grouping)
 
         // Parent
         if let parent {
             parameters = parent.setParentParameters(parameters)
+            parameters.includeItemTypes = (parent as? BaseItemDto)?
+                .AsupportedItemTypes(for: grouping)
         }
 
         // Page size

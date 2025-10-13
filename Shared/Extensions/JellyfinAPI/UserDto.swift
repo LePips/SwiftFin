@@ -26,3 +26,10 @@ extension UserDto {
         )
     }
 }
+
+extension UserDto: LibraryIdentifiable {
+
+    var unwrappedIDHashOrZero: Int {
+        id?.hashValue ?? 0
+    }
+}

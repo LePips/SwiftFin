@@ -156,7 +156,7 @@ extension EnhancedItemViewHeader {
             .preference(key: ContentGroupCustomizationKey.self, value: .useOffsetNavigationBar)
             .preference(key: MenuContentKey.self) {
                 #if os(iOS)
-                if viewModel.userSession.user.permissions.items.canEditMetadata(item: viewModel.item) {
+                if viewModel.item.canEditMetadata {
                     MenuContentGroup(id: "test") {
                         Button(L10n.edit, systemImage: "pencil") {
                             router.route(to: .editItem(viewModel.item))

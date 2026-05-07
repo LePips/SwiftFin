@@ -178,15 +178,19 @@ extension BaseItemDto {
                 guard let channel = try? await self.getChannel(
                     for: program,
                     userSession: userSession
-                )
+                ),
+                    let mediaSource = channel.mediaSources?.first
                 else {
                     throw ErrorMessage(L10n.unknownError)
                 }
-                return try await MediaPlayerItem.build(for: channel)
+                return try await MediaPlayerItem.build(for: program, mediaSource: mediaSource)
             }
         default:
             MediaPlayerItemProvider(item: self) { item in
-                try await MediaPlayerItem.build(for: item)
+                guard let mediaSource = item.mediaSources?.first else {
+                    throw ErrorMessage(L10n.unknownError)
+                }
+                return try await MediaPlayerItem.build(for: item, mediaSource: mediaSource)
             }
         }
     }
@@ -197,13 +201,11 @@ extension BaseItemDto {
     ) async throws -> BaseItemDto? {
         guard type == .program else { return nil }
 
-        var parameters = Paths.GetItemsByUserIDParameters()
+        var parameters = Paths.GetItemsParameters()
+        parameters.fields = .MinimumFields
         parameters.ids = [program.channelID ?? ""]
 
-        let request = Paths.getItemsByUserID(
-            userID: userSession.user.id,
-            parameters: parameters
-        )
+        let request = Paths.getItems(parameters: parameters)
         let response = try await userSession.client.send(request)
 
         return response.value.items?.first
@@ -400,7 +402,7 @@ extension BaseItemDto {
     var downloadFolder: URL? {
         guard let type, let id else { return nil }
 
-        let root = URL.downloads
+        let root = URL.downloadsDirectory
 //            .appendingPathComponent(userSession.user.id)
 
         switch type {
@@ -429,13 +431,15 @@ extension BaseItemDto {
 
     /// Can this `BaseItemDto` be played
     var presentPlayButton: Bool {
+        guard Container.shared.currentUserSession()?.user.data.policy?.enableMediaPlayback == true else { return false }
+
         switch type {
         case .audio, .audioBook, .book, .channel, .channelFolderItem, .episode,
              .movie, .liveTvChannel, .liveTvProgram, .musicAlbum, .musicArtist, .musicVideo, .playlist,
              .program, .recording, .season, .series, .trailer, .tvChannel, .tvProgram, .video:
-            true
+            return true
         default:
-            false
+            return false
         }
     }
 
@@ -475,6 +479,20 @@ extension BaseItemDto {
         return L10n.play
     }
 
+    /// Label for the parent's type
+    var parentLabel: String? {
+        switch type {
+        case .audio:
+            L10n.album
+        case .episode:
+            L10n.series
+        case .musicAlbum:
+            L10n.artist
+        default:
+            nil
+        }
+    }
+
     var parentTitle: String? {
         switch type {
         case .audio:
@@ -483,6 +501,8 @@ extension BaseItemDto {
             albumArtists?.first?.name
         case .episode:
             seriesName
+        case .musicAlbum:
+            albumArtist
         default:
             nil
         }
@@ -500,7 +520,7 @@ extension BaseItemDto {
         }
     }
 
-    func getFullItem(userSession: UserSession) async throws -> BaseItemDto {
+    func getFullItem(userSession: UserSession, sendNotification: Bool = false) async throws -> BaseItemDto {
         guard let id else {
             throw ErrorMessage(L10n.unknownError)
         }
@@ -511,6 +531,10 @@ extension BaseItemDto {
         // A check against `id` would typically be done, but a plugin
         // may have provided `self` or the response item and may not
         // be invariant over `id`.
+
+        if sendNotification {
+            Notifications[.itemMetadataDidChange].post(response.value)
+        }
 
         return response.value
     }

@@ -81,9 +81,27 @@ private struct PlatformForm<Image: View, Content: View>: PlatformView {
             Form {
                 content
             }
-            .padding(.top)
             .backport
             .scrollClipDisabled()
+            .mask(extendedBy: .init(vertical: 20, horizontal: 100)) {
+                VStack(spacing: 0) {
+                    LinearGradient(
+                        colors: [.clear, .white],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 20)
+
+                    Color.white
+
+                    LinearGradient(
+                        colors: [.white, .clear],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 20)
+                }
+            }
         }
     }
 
@@ -101,16 +119,26 @@ private struct PlatformForm<Image: View, Content: View>: PlatformView {
 
     @ViewBuilder
     private func learnMoreModal(_ content: AnyView) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
-            content
-                .labeledContentStyle(LearnMoreLabeledContentStyle())
-                .foregroundStyle(Color.primary, Color.secondary)
+        Marquee(axis: .vertical, resetType: .bounce, speed: 30, fade: 20) {
+            VStack(alignment: .leading, spacing: 16) {
+                content
+                    .labeledContentStyle(LearnMoreLabeledContentStyle())
+                    .foregroundStyle(Color.primary, Color.secondary)
+            }
+            .edgePadding()
         }
-        .edgePadding()
         .background {
-            RoundedRectangle(cornerRadius: 20)
+            ContainerRelativeShape()
                 .fill(Material.thick)
         }
+        .overlay(
+            ContainerRelativeShape()
+                .stroke(
+                    .white.opacity(0.1),
+                    lineWidth: 1
+                )
+        )
+        .containerShape(RoundedRectangle(cornerRadius: 20))
         .padding()
     }
 }

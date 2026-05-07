@@ -54,18 +54,20 @@ extension CustomizeViewsSettings {
                 Section(L10n.management) {
 
                     /// Enabled Collection Management for collection managers
-                    if userSession?.user.permissions.items.canManageCollections == true {
+                    if userSession?.user.data.policy?.isAdministrator == true ||
+                        userSession?.user.data.policy?.enableCollectionManagement == true
+                    {
                         Toggle(L10n.editCollections, isOn: $enableCollectionManagement)
                     }
                     /// Enabled Media Management when there are media elements that can be managed
-                    if userSession?.user.permissions.items.canEditMetadata == true ||
-                        userSession?.user.permissions.items.canManageLyrics == true ||
-                        userSession?.user.permissions.items.canManageSubtitles == true
-                    {
+                    if userSession?.user.data.policy?.isAdministrator == true {
                         Toggle(L10n.editMedia, isOn: $enableItemEditing)
                     }
                     /// Enabled Media Deletion for valid deletion users
-                    if userSession?.user.permissions.items.canDelete == true {
+                    if userSession?.user.data.policy?.isAdministrator == true ||
+                        userSession?.user.data.policy?.enableContentDeletion == true ||
+                        userSession?.user.data.policy?.enableContentDeletionFromFolders?.isNotEmpty == true
+                    {
                         Toggle(L10n.deleteMedia, isOn: $enableItemDeletion)
                     }
                 }
@@ -74,7 +76,7 @@ extension CustomizeViewsSettings {
                     Toggle(L10n.showMissingSeasons, isOn: $shouldShowMissingSeasons)
                     Toggle(L10n.showMissingEpisodes, isOn: $shouldShowMissingEpisodes)
                 } header: {
-                    Text(L10n.missingItems)
+                    Text(L10n.missing)
                 }
             } image: {
                 WithEnvironment(\._navigationTitle) { navigationTitle in

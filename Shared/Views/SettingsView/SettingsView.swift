@@ -19,14 +19,12 @@ struct SettingsView: View {
     #if os(iOS)
     @Default(.userAppearance)
     private var appearance
-    #endif
-
-    #if os(iOS)
     @Default(.userAccentColor)
+    private var accentColor
     #else
     @Default(.accentColor)
-    #endif
     private var accentColor
+    #endif
 
     @Default(.VideoPlayer.videoPlayerType)
     private var videoPlayerType
@@ -40,7 +38,7 @@ struct SettingsView: View {
         Form(image: .jellyfinBlobBlue) {
             serverSection
             videoPlayerSection
-            customizationSection
+            customizeSection
             diagnosticsSection
         }
         #if os(iOS)
@@ -57,7 +55,7 @@ struct SettingsView: View {
     private var serverSection: some View {
         Section {
             UserProfileRow(user: viewModel.userSession.user.data) {
-                router.route(to: .userProfile(viewModel: viewModel))
+                router.route(to: .localUserSettings(viewModel: viewModel))
             }
 
             ChevronButton(
@@ -79,7 +77,7 @@ struct SettingsView: View {
             }
 
             #if os(iOS)
-            if viewModel.userSession.user.permissions.isAdministrator {
+            if viewModel.userSession?.user.data.policy?.isAdministrator == true {
                 ChevronButton(L10n.dashboard) {
                     router.route(to: .adminDashboard)
                 }
@@ -122,7 +120,7 @@ struct SettingsView: View {
             }
         } learnMore: {
             LabeledContent(
-                "Swiftfin",
+                L10n.swiftfin,
                 value: L10n.playerSwiftfinDescription
             )
             LabeledContent(
@@ -135,34 +133,21 @@ struct SettingsView: View {
     // MARK: - Customization Section
 
     @ViewBuilder
-    private var customizationSection: some View {
-        Section(L10n.accessibility) {
+    private var customizeSection: some View {
+        Section {
             #if os(iOS)
             Picker(L10n.appearance, selection: $appearance)
             #endif
+            ColorPicker(L10n.accentColor, selection: $accentColor, supportsOpacity: false)
 
-            ChevronButton(L10n.customize) {
-                router.route(to: .customizeViewsSettings)
+            ChevronButton(L10n.advanced) {
+                router.route(to: .customizeSettingsView)
             }
-        }
-
-        #if os(iOS)
-        Section {
-            ColorPicker(L10n.accentColor, selection: $accentColor, supportsOpacity: false)
-        } footer: {
-            Text(L10n.viewsMayRequireRestart)
-        }
-        #endif
-
-        #if os(tvOS)
-        Section {
-            ColorPicker(L10n.accentColor, selection: $accentColor, supportsOpacity: false)
         } header: {
-            Text(L10n.appearance)
+            Text(L10n.customize)
         } footer: {
             Text(L10n.viewsMayRequireRestart)
         }
-        #endif
     }
 
     // MARK: - Diagnostics Section
@@ -170,6 +155,13 @@ struct SettingsView: View {
     @ViewBuilder
     private var diagnosticsSection: some View {
         Section {
+
+            if ExperimentalSettingsView.isEnabled {
+                ChevronButton(L10n.experimental) {
+                    router.route(to: .experimentalSettings)
+                }
+            }
+
             ChevronButton(L10n.logs) {
                 router.route(to: .log)
             }

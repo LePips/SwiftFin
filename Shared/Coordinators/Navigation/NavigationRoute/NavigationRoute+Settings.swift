@@ -12,53 +12,74 @@ import SwiftUI
 
 extension NavigationRoute {
 
-    #if os(iOS)
     static func actionBarButtonSelector(selectedButtonsBinding: Binding<[VideoPlayerActionButton]>) -> NavigationRoute {
-        NavigationRoute(id: "actionButtonSelector") {
-            ActionButtonSelectorView(selection: selectedButtonsBinding)
+        NavigationRoute(id: "actionBarButtonSelector") {
+            OrderedSectionSelectorView(selection: selectedButtonsBinding, sources: VideoPlayerActionButton.allCases)
                 .navigationTitle(L10n.barButtons.localizedCapitalized)
         }
     }
 
     static func actionMenuButtonSelector(selectedButtonsBinding: Binding<[VideoPlayerActionButton]>) -> NavigationRoute {
-        NavigationRoute(id: "actionButtonSelector") {
-            ActionButtonSelectorView(selection: selectedButtonsBinding)
+        NavigationRoute(id: "actionMenuButtonSelector") {
+            OrderedSectionSelectorView(selection: selectedButtonsBinding, sources: VideoPlayerActionButton.allCases)
                 .navigationTitle(L10n.menuButtons.localizedCapitalized)
         }
     }
 
-    static let adminDashboard = NavigationRoute(
-        id: "adminDashboard"
-    ) {
-        AdminDashboardView()
+    static func supplementSelector(selectedSupplementsBinding: Binding<[VideoPlayerSupplement]>) -> NavigationRoute {
+        NavigationRoute(id: "supplementSelector") {
+            OrderedSectionSelectorView(
+                selection: selectedSupplementsBinding,
+                sources: VideoPlayerSupplement.allCases,
+                removable: VideoPlayerSupplement.allCases.subtracting(VideoPlayerSupplement.supportedCases)
+            )
+            .navigationTitle(L10n.supplements.localizedCapitalized)
+        }
+    }
+
+    #if os(iOS)
+    static var adminDashboard: NavigationRoute {
+        NavigationRoute(
+            id: "adminDashboard"
+        ) {
+            AdminDashboardView()
+        }
     }
     #endif
 
-    static let createDeviceProfile = NavigationRoute(
-        id: "createDeviceProfile",
-        style: .sheet
-    ) {
-        CustomDeviceProfilesView.EditDeviceProfileView(profile: nil)
-            .navigationTitle(L10n.customProfile.localizedCapitalized)
+    static var createDeviceProfile: NavigationRoute {
+        NavigationRoute(
+            id: "createDeviceProfile",
+            style: .sheet
+        ) {
+            CustomDeviceProfilesView.EditDeviceProfileView(profile: nil)
+                .navigationTitle(L10n.customProfile.localizedCapitalized)
+        }
     }
 
-    static let customDeviceProfilesSettings = NavigationRoute(
-        id: "customDeviceProfilesSettings"
-    ) {
-        CustomDeviceProfilesView()
+    static var customDeviceProfilesSettings: NavigationRoute {
+        NavigationRoute(
+            id: "customDeviceProfilesSettings"
+        ) {
+            CustomDeviceProfilesView()
+        }
     }
 
-    static let customizeViewsSettings = NavigationRoute(
-        id: "customizeViewsSettings"
-    ) {
-        CustomizeViewsSettings()
+    static var customizeSettingsView: NavigationRoute {
+        NavigationRoute(
+            id: "customizeSettingsView"
+        ) {
+            CustomizeSettingsView()
+        }
     }
 
     #if DEBUG
-    static let debugSettings = NavigationRoute(
-        id: "debugSettings"
-    ) {
-        DebugSettingsView()
+    static var debugSettings: NavigationRoute {
+        NavigationRoute(
+            id: "debugSettings"
+        ) {
+            DebugSettingsView()
+        }
     }
     #endif
 
@@ -74,21 +95,21 @@ extension NavigationRoute {
 
     static func editDeviceProfileAudio(selection: Binding<[AudioCodec]>) -> NavigationRoute {
         NavigationRoute(id: "editDeviceProfileAudio") {
-            OrderedSectionSelectorView(selection: selection, sources: AudioCodec.allCases)
+            OrderedSectionSelectorView(systemImage: "waveform", selection: selection, sources: AudioCodec.allCases)
                 .navigationTitle(L10n.audio)
         }
     }
 
     static func editDeviceProfileContainer(selection: Binding<[MediaContainer]>) -> NavigationRoute {
         NavigationRoute(id: "editDeviceProfileContainer") {
-            OrderedSectionSelectorView(selection: selection, sources: MediaContainer.allCases)
+            OrderedSectionSelectorView(systemImage: "archivebox", selection: selection, sources: MediaContainer.allCases)
                 .navigationTitle(L10n.containers)
         }
     }
 
     static func editDeviceProfileVideo(selection: Binding<[VideoCodec]>) -> NavigationRoute {
         NavigationRoute(id: "editDeviceProfileVideo") {
-            OrderedSectionSelectorView(selection: selection, sources: VideoCodec.allCases)
+            OrderedSectionSelectorView(systemImage: "play.rectangle", selection: selection, sources: VideoCodec.allCases)
                 .navigationTitle(L10n.video)
         }
     }
@@ -100,10 +121,12 @@ extension NavigationRoute {
         }
     }
 
-    static let experimentalSettings = NavigationRoute(
-        id: "experimentalSettings"
-    ) {
-        ExperimentalSettingsView()
+    static var experimentalSettings: NavigationRoute {
+        NavigationRoute(
+            id: "experimentalSettings"
+        ) {
+            ExperimentalSettingsView()
+        }
     }
 
     static func fontPicker(selection: Binding<String>) -> NavigationRoute {
@@ -113,10 +136,12 @@ extension NavigationRoute {
     }
 
     #if os(iOS)
-    static let gestureSettings = NavigationRoute(
-        id: "gestureSettings"
-    ) {
-        GestureSettingsView()
+    static var gestureSettings: NavigationRoute {
+        NavigationRoute(
+            id: "gestureSettings"
+        ) {
+            GestureSettingsView()
+        }
     }
     #endif
 
@@ -138,37 +163,66 @@ extension NavigationRoute {
         CustomizeViewsSettings.PosterSection()
     }
 
+    static var indicatorSettings: NavigationRoute {
+        NavigationRoute(
+            id: "indicatorSettings"
+        ) {
+            IndicatorSettingsView()
+        }
+    }
+
     static func itemFilterDrawerSelector(selection: Binding<[ItemFilterType]>) -> NavigationRoute {
         NavigationRoute(id: "itemFilterDrawerSelector") {
-            OrderedSectionSelectorView(selection: selection, sources: ItemFilterType.allCases)
+            OrderedSectionSelectorView(systemImage: "line.3.horizontal.decrease", selection: selection, sources: ItemFilterType.allCases)
                 .navigationTitle(L10n.filters)
         }
     }
 
-    static let localSecurity = NavigationRoute(
-        id: "localSecurity"
-    ) {
-        UserLocalSecurityView()
+    static func itemViewAttributes(selection: Binding<[ItemViewAttribute]>) -> NavigationRoute {
+        NavigationRoute(id: "itemViewAttributes") {
+            OrderedSectionSelectorView(systemImage: "tag", selection: selection, sources: ItemViewAttribute.allCases)
+                .navigationTitle(L10n.mediaAttributes.localizedCapitalized)
+        }
     }
 
-    static let log = NavigationRoute(
-        id: "log"
-    ) {
-        ConsoleView()
+    static var localUserSecurity: NavigationRoute {
+        NavigationRoute(
+            id: "localUserSecurity"
+        ) {
+            LocalUserSecurityView()
+        }
+    }
+
+    static func localUserSettings(viewModel: SettingsViewModel) -> NavigationRoute {
+        NavigationRoute(id: "localUserSettings") {
+            LocalUserSettingsView(viewModel: viewModel)
+        }
+    }
+
+    static var log: NavigationRoute {
+        NavigationRoute(
+            id: "log"
+        ) {
+            ConsoleView()
+        }
     }
 
     #if os(iOS)
-    static let nativePlayerSettings = NavigationRoute(
-        id: "nativePlayerSettings"
-    ) {
-        NativeVideoPlayerSettingsView()
+    static var nativePlayerSettings: NavigationRoute {
+        NavigationRoute(
+            id: "nativePlayerSettings"
+        ) {
+            NativeVideoPlayerSettingsView()
+        }
     }
     #endif
 
-    static let playbackQualitySettings = NavigationRoute(
-        id: "playbackQualitySettings"
-    ) {
-        PlaybackQualitySettingsView()
+    static var playbackQualitySettings: NavigationRoute {
+        NavigationRoute(
+            id: "playbackQualitySettings"
+        ) {
+            PlaybackQualitySettingsView()
+        }
     }
 
     #if os(iOS)
@@ -188,22 +242,20 @@ extension NavigationRoute {
         }
     }
 
-    static let settings = NavigationRoute(
-        id: "settings",
-        style: .sheet
-    ) {
-        SettingsView()
-    }
-
-    static func userProfile(viewModel: SettingsViewModel) -> NavigationRoute {
-        NavigationRoute(id: "userProfile") {
-            UserProfileSettingsView(viewModel: viewModel)
+    static var settings: NavigationRoute {
+        NavigationRoute(
+            id: "settings",
+            style: .sheet
+        ) {
+            SettingsView()
         }
     }
 
-    static let videoPlayerSettings = NavigationRoute(
-        id: "videoPlayerSettings"
-    ) {
-        VideoPlayerSettingsView()
+    static var videoPlayerSettings: NavigationRoute {
+        NavigationRoute(
+            id: "videoPlayerSettings"
+        ) {
+            VideoPlayerSettingsView()
+        }
     }
 }

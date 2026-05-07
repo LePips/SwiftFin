@@ -110,7 +110,7 @@ extension StoredValues.Keys.User {
     static func customContentGroup(id: String) -> StoredValues.Key<ContentGroupProviderSetting> {
         StoredValues.Keys.CurrentUserKey(
             "__customContentGroup_\(id)",
-            domain: "__customContentGroup_\(id)",
+            field: "__customContentGroup_\(id)",
             default: .custom(
                 .init(
                     displayTitle: "Custom \(id)",

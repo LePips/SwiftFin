@@ -74,3 +74,59 @@ struct DeviceProfileLabeledContentStyle: LabeledContentStyle {
         .font(.subheadline)
     }
 }
+
+extension LabeledContentStyle where Self == PlaybackInfoLabeledContentStyle {
+
+    static var playbackInfo: PlaybackInfoLabeledContentStyle {
+        PlaybackInfoLabeledContentStyle()
+    }
+}
+
+struct PlaybackInfoLabeledContentStyle: LabeledContentStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 0) {
+            configuration.label
+                .foregroundStyle(.secondary)
+
+            // swiftlint:disable:next hard_coded_display_string
+            Text(":")
+                .foregroundStyle(.secondary)
+                .padding(.trailing, 4)
+
+            Spacer()
+
+            configuration.content
+                .foregroundStyle(.primary)
+        }
+        .font(.subheadline)
+    }
+}
+
+extension LabeledContentStyle where Self == FocusableLabeledContentStyle {
+
+    static var focusable: FocusableLabeledContentStyle {
+        FocusableLabeledContentStyle()
+    }
+}
+
+struct FocusableLabeledContentStyle: LabeledContentStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        #if os(tvOS)
+        Button {} label: {
+            LabeledContent {
+                configuration.content
+            } label: {
+                configuration.label
+            }
+        }
+        #else
+        LabeledContent {
+            configuration.content
+        } label: {
+            configuration.label
+        }
+        #endif
+    }
+}

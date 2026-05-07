@@ -11,6 +11,7 @@ import Factory
 import JellyfinAPI
 import Logging
 import SwiftUI
+import Transmission
 
 // TODO: remove
 
@@ -48,7 +49,7 @@ struct NativeVideoPlayer: View {
             manager.proxy = proxy
             manager.start()
         }
-        .preference(key: IsStatusBarHiddenKey.self, value: true)
+        .prefersStatusBarHidden()
         .backport
         .onChange(of: presentationCoordinator.isPresented) { _, isPresented in
             Container.shared.mediaPlayerManager.reset()
@@ -64,8 +65,7 @@ struct NativeVideoPlayer: View {
                 router.dismiss()
             }
         } message: {
-            // TODO: localize
-            Text("Unable to load this item.")
+            Text(L10n.unableToLoadThisItem)
         }
     }
 }

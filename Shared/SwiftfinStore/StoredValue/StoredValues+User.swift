@@ -22,36 +22,34 @@ extension StoredValues.Keys {
     /// current user session, or always returns the default if there
     /// isn't a current session user.
     static func CurrentUserKey<Value: Codable>(
-        _ name: String?,
-        domain: String,
-        default defaultValue: Value
+        _ name: String? = nil,
+        field: String,
+        default defaultValue: Value,
+        storage: StoredValues.Key<Value>.StorageDestination = .sql,
     ) -> Key<Value> {
-        guard let name, let currentUser = Container.shared.currentUserSession()?.user else {
+        guard let currentUser = Container.shared.currentUserSession()?.user else {
             return Key(always: defaultValue)
         }
 
         return Key(
-            name,
+            name ?? field,
             ownerID: currentUser.id,
-            domain: domain,
+            field: field,
+            storage: storage,
             default: defaultValue
         )
     }
 
     static func UserKey<Value: Codable>(
-        _ name: String?,
+        _ name: String? = nil,
         ownerID: String,
-        domain: String,
+        field: String,
         default defaultValue: Value
     ) -> Key<Value> {
-        guard let name else {
-            return Key(always: defaultValue)
-        }
-
-        return Key(
-            name,
+        Key(
+            name ?? field,
             ownerID: ownerID,
-            domain: domain,
+            field: field,
             default: defaultValue
         )
     }
@@ -63,17 +61,36 @@ extension StoredValues.Keys {
 
 // MARK: values
 
+extension UserAccessPolicy: Storable {}
+extension UserDto: @retroactive Defaults.Serializable {}
+extension UserDto: Storable {}
+extension UserState: Defaults.Serializable {}
+extension UserState: Storable {}
+extension Array: Storable where Element: Storable {}
+extension Bool: Storable {}
+extension Int: Storable {}
+extension String: Storable {}
+
 extension StoredValues.Keys {
 
     enum User {
+
+        static var users: Key<[UserState]> {
+            Key(
+                "users",
+                ownerID: "swiftfinApp",
+                field: "users",
+                storage: .sql,
+                default: []
+            )
+        }
 
         // Doesn't use `CurrentUserKey` because data may be
         // retrieved and stored without a user session
         static func accessPolicy(id: String) -> Key<UserAccessPolicy> {
             UserKey(
-                "accessPolicy",
                 ownerID: id,
-                domain: "accessPolicy",
+                field: "accessPolicy",
                 default: .none
             )
         }
@@ -82,17 +99,15 @@ extension StoredValues.Keys {
         // retrieved and stored without a user session
         static func data(id: String) -> Key<UserDto> {
             UserKey(
-                "userData",
                 ownerID: id,
-                domain: "userData",
+                field: "userData",
                 default: .init()
             )
         }
 
         static var accessPolicy: Key<UserAccessPolicy> {
             CurrentUserKey(
-                "currentUserAccessPolicy",
-                domain: "currentUserAccessPolicy",
+                field: "currentUserAccessPolicy",
                 default: .none
             )
         }
@@ -101,23 +116,47 @@ extension StoredValues.Keys {
             if let id {
                 CurrentUserKey(
                     id,
-                    domain: "setting-libraryStyle",
+                    field: "setting-libraryStyle",
                     default: .default
                 )
             } else {
                 CurrentUserKey(
                     "swiftfin-default",
-                    domain: "setting-libraryStyle",
+                    field: "setting-libraryStyle",
                     default: .default
                 )
             }
         }
 
+        static func libraryDisplayType(parentID: String?) -> Key<LibraryDisplayType> {
+            CurrentUserKey(
+                parentID,
+                field: "setting-libraryDisplayType",
+                default: Defaults[.Customization.Library.displayType]
+            )
+        }
+
+        static func libraryListColumnCount(parentID: String?) -> Key<Int> {
+            CurrentUserKey(
+                parentID,
+                field: "setting-libraryListColumnCount",
+                default: Defaults[.Customization.Library.listColumnCount]
+            )
+        }
+
         static func posterButtonStyle(parentID: String?) -> Key<PosterDisplayConfiguration> {
             CurrentUserKey(
                 parentID,
-                domain: "setting-posterButtonStyle",
+                field: "setting-posterButtonStyle",
                 default: .default
+            )
+        }
+
+        static func libraryPosterType(parentID: String?) -> Key<PosterDisplayType> {
+            CurrentUserKey(
+                parentID,
+                field: "setting-libraryPosterType",
+                default: Defaults[.Customization.Library.posterType]
             )
         }
 
@@ -127,24 +166,22 @@ extension StoredValues.Keys {
         static func libraryFilters(parentID: String?) -> Key<ItemFilterCollection> {
             CurrentUserKey(
                 parentID,
-                domain: "setting-libraryFilters",
+                field: "setting-libraryFilters",
                 default: ItemFilterCollection.default
             )
         }
 
         static func pinHint(id: String) -> Key<String> {
             UserKey(
-                "pinHint",
                 ownerID: id,
-                domain: "pinHint",
+                field: "pinHint",
                 default: ""
             )
         }
 
         static var customDeviceProfiles: Key<[CustomDeviceProfile]> {
             CurrentUserKey(
-                "customDeviceProfiles",
-                domain: "customDeviceProfiles",
+                field: "customDeviceProfiles",
                 default: []
             )
         }
@@ -152,56 +189,56 @@ extension StoredValues.Keys {
         // TODO: move edit/delete item + edit collections to an OptionSet
         static var enableItemEditing: Key<Bool> {
             CurrentUserKey(
-                "enableItemEditing",
-                domain: "enableItemEditing",
+                field: "enableItemEditing",
                 default: false
             )
         }
 
         static var enableItemDeletion: Key<Bool> {
             CurrentUserKey(
-                "enableItemDeletion",
-                domain: "enableItemDeletion",
+                field: "enableItemDeletion",
                 default: false
             )
         }
 
         static var enableCollectionManagement: Key<Bool> {
             CurrentUserKey(
-                "enableCollectionManagement",
-                domain: "enableCollectionManagement",
+                field: "enableCollectionManagement",
                 default: false
             )
         }
 
         static var enabledTrailers: Key<TrailerSelection> {
             CurrentUserKey(
-                "enabledTrailers",
-                domain: "enabledTrailers",
+                field: "enabledTrailers",
                 default: .all
+            )
+        }
+
+        static var itemViewAttributes: Key<[ItemViewAttribute]> {
+            CurrentUserKey(
+                field: "itemViewAttributes",
+                default: ItemViewAttribute.allCases
             )
         }
 
         static var previewImageScrubbing: Key<PreviewImageScrubbingOption> {
             CurrentUserKey(
-                "previewImageScrubbing",
-                domain: "previewImageScrubbing",
+                field: "previewImageScrubbing",
                 default: .trickplay(fallbackToChapters: false)
             )
         }
 
         static var forceDVTranscode: Key<Bool> {
             CurrentUserKey(
-                "forceDVTranscode",
-                domain: "forceDVTranscode",
+                field: "forceDVTranscode",
                 default: false
             )
         }
 
         static var forceHDRTranscode: Key<Bool> {
             CurrentUserKey(
-                "forceHDRTranscode",
-                domain: "forceHDRTranscode",
+                field: "forceHDRTranscode",
                 default: false
             )
         }

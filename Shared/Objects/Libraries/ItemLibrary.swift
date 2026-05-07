@@ -59,7 +59,7 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
         pageState: LibraryPageState
     ) async throws -> [BaseItemDto] {
 
-        let parameters = attachPage(
+        var parameters = attachPage(
             to: attachFilters(
                 to: makeBaseItemParameters(environment: environment),
 //                using: self.environment?.filters ?? environment.filters,
@@ -68,11 +68,9 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
             ),
             pageState: pageState
         )
+        parameters.userID = pageState.userSession.user.id
 
-        let request = Paths.getItemsByUserID(
-            userID: pageState.userSession.user.id,
-            parameters: parameters
-        )
+        let request = Paths.getItems(parameters: parameters)
         let response = try await pageState.userSession.client.send(
             request
         )
@@ -97,9 +95,9 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
 
     private func makeBaseItemParameters(
         environment: Environment
-    ) -> Paths.GetItemsByUserIDParameters {
+    ) -> Paths.GetItemsParameters {
 
-        var parameters = Paths.GetItemsByUserIDParameters()
+        var parameters = Paths.GetItemsParameters()
         parameters.enableUserData = true
         parameters.fields = environment.fields
 
@@ -107,7 +105,7 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
         // by parent or filters
         parameters.includeItemTypes = BaseItemKind.supportedCases
         parameters.sortOrder = [.ascending]
-        parameters.sortBy = [ItemSortBy.name.rawValue]
+        parameters.sortBy = [.name]
 
         /// Recursive should only apply to parents/folders and not to baseItems
         parameters.isRecursive = parent._isRecursiveCollection(for: environment.grouping)
@@ -132,16 +130,16 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
     }
 
     func attachFilters(
-        to parameters: Paths.GetItemsByUserIDParameters,
+        to parameters: Paths.GetItemsParameters,
         using filters: ItemFilterCollection,
         pageState: LibraryPageState
-    ) -> Paths.GetItemsByUserIDParameters {
+    ) -> Paths.GetItemsParameters {
 
         var parameters = parameters
         parameters.filters = filters.traits.nilIfEmpty
         parameters.genres = filters.genres.map(\.value).nilIfEmpty
         parameters.searchTerm = filters.query
-        parameters.sortBy = filters.sortBy.map(\.rawValue).nilIfEmpty
+        parameters.sortBy = filters.sortBy.nilIfEmpty
         parameters.sortOrder = filters.sortOrder.nilIfEmpty
         parameters.tags = filters.tags.map(\.value).nilIfEmpty
         parameters.years = filters.years.compactMap { Int($0.value) }.nilIfEmpty
@@ -152,7 +150,7 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
         }
 
         if filters.mediaTypes.isNotEmpty {
-            parameters.mediaTypes = filters.mediaTypes.map(\.rawValue).nilIfEmpty
+            parameters.mediaTypes = filters.mediaTypes.nilIfEmpty
         }
 
         if filters.letter.first?.value == "#" {
@@ -168,9 +166,9 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
     }
 
     private func attachPage(
-        to parameters: Paths.GetItemsByUserIDParameters,
+        to parameters: Paths.GetItemsParameters,
         pageState: LibraryPageState
-    ) -> Paths.GetItemsByUserIDParameters {
+    ) -> Paths.GetItemsParameters {
         var parameters = parameters
         parameters.limit = pageState.pageSize
         parameters.startIndex = pageState.pageOffset
@@ -188,12 +186,10 @@ struct ItemLibrary: PagingLibrary, WithRandomElementLibrary {
         )
 
         parameters.limit = 1
-        parameters.sortBy = [ItemSortBy.random.rawValue]
+        parameters.sortBy = [.random]
+        parameters.userID = pageState.userSession.user.id
 
-        let request = Paths.getItemsByUserID(
-            userID: pageState.userSession.user.id,
-            parameters: parameters
-        )
+        let request = Paths.getItems(parameters: parameters)
         let response = try? await pageState.userSession.client.send(request)
 
         return response?.value.items?.first

@@ -53,7 +53,11 @@ final class FilterViewModel: ViewModel {
     }
 
     func isFilterSelected(type: ItemFilterType) -> Bool {
-        currentFilters[keyPath: type.collectionAnyKeyPath] != ItemFilterCollection.default[keyPath: type.collectionAnyKeyPath]
+        type.group
+            .map(\.keyPath)
+            .contains { keyPath in
+                currentFilters[keyPath: keyPath] != ItemFilterCollection.default[keyPath: keyPath]
+            }
     }
 
     @Function(\Action.Cases.reset)
@@ -71,7 +75,6 @@ final class FilterViewModel: ViewModel {
             currentFilters.letter = ItemFilterCollection.default.letter
         case .sortBy:
             currentFilters.sortBy = ItemFilterCollection.default.sortBy
-        case .sortOrder:
             currentFilters.sortOrder = ItemFilterCollection.default.sortOrder
         case .tags:
             currentFilters.tags = ItemFilterCollection.default.tags

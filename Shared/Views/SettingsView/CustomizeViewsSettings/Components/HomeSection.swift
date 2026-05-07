@@ -23,7 +23,7 @@ extension CustomizeViewsSettings {
         var body: some View {
             Section(L10n.home) {
 
-                Toggle(L10n.showRecentlyAdded, isOn: $showRecentlyAdded)
+                Toggle(L10n.recentlyAdded, isOn: $showRecentlyAdded)
 
                 Toggle(L10n.nextUpRewatch, isOn: $resumeNextUp)
 

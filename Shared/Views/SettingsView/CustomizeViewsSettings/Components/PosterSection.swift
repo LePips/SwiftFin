@@ -45,8 +45,8 @@ extension CustomizeViewsSettings {
             type: .movie,
             userData: .init(
                 isFavorite: true,
-                playbackPositionTicks: Duration.seconds(600).ticks,
-                isPlayed: true
+                isPlayed: true,
+                playbackPositionTicks: Duration.seconds(600).ticks
             )
         )
 
@@ -115,11 +115,16 @@ extension CustomizeViewsSettings {
                 }
 
                 Section {
-                    Toggle(L10n.seriesBackdrop, isOn: $useSeriesLandscapeBackdrop)
+                    Toggle("Series backdrop", isOn: $useSeriesLandscapeBackdrop)
                 } header: {
                     // TODO: think of a better name
-                    Text(L10n.episodeLandscapePoster)
+                    Text("Episode landscape poster")
                 }
+            } image: {
+                Image(systemName: "rectangle.portrait.on.rectangle.portrait.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 400)
             }
             .navigationTitle(L10n.posters)
         }

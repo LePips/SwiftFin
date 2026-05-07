@@ -23,6 +23,20 @@ extension View {
             )
         )
     }
+
+    func mask(
+        alignment: Alignment = .center,
+        extendedBy insets: EdgeInsets,
+        @ViewBuilder mask: () -> some View
+    ) -> some View {
+        modifier(
+            ExtendedMaskModifier(
+                alignment: alignment,
+                insets: insets,
+                mask: mask
+            )
+        )
+    }
 }
 
 struct ExtendedBackgroundModifier<Background: View>: ViewModifier {
@@ -49,6 +63,38 @@ struct ExtendedBackgroundModifier<Background: View>: ViewModifier {
             .trackingFrame($contentFrame)
             .background(alignment: alignment) {
                 background
+                    .frame(
+                        width: contentFrame.width + insets.leading + insets.trailing,
+                        height: contentFrame.height + insets.top + insets.bottom
+                    )
+            }
+    }
+}
+
+struct ExtendedMaskModifier<Mask: View>: ViewModifier {
+
+    @State
+    private var contentFrame: CGRect = .zero
+
+    private let alignment: Alignment
+    private let insets: EdgeInsets
+    private let mask: Mask
+
+    init(
+        alignment: Alignment,
+        insets: EdgeInsets,
+        @ViewBuilder mask: () -> Mask
+    ) {
+        self.alignment = alignment
+        self.insets = insets
+        self.mask = mask()
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .trackingFrame($contentFrame)
+            .mask(alignment: alignment) {
+                mask
                     .frame(
                         width: contentFrame.width + insets.leading + insets.trailing,
                         height: contentFrame.height + insets.top + insets.bottom

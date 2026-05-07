@@ -22,8 +22,8 @@ struct ChannelProgramLibrary: PagingLibrary {
         pageState: LibraryPageState
     ) async throws -> [ChannelProgram] {
         var parameters = Paths.GetLiveTvChannelsParameters()
-//        parameters.fields = .MinimumFields
         parameters.userID = pageState.userSession.user.id
+        parameters.fields = .MinimumFields
         parameters.sortBy = [ItemSortBy.name]
 
         parameters.limit = pageState.pageSize
@@ -49,7 +49,6 @@ struct ChannelProgramLibrary: PagingLibrary {
 
         var parameters = Paths.GetLiveTvProgramsParameters()
         parameters.channelIDs = channels.compactMap(\.id)
-        parameters.userID = userSession.user.id
         parameters.maxStartDate = maxStartDate
         parameters.minEndDate = minEndDate
         parameters.sortBy = [ItemSortBy.startDate]

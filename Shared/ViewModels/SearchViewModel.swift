@@ -132,15 +132,15 @@ final class SearchViewModel: ViewModel {
     @Function(\Action.Cases.getSuggestions)
     private func _getSuggestions() async throws {
 
-        async let _ = filterViewModel.getQueryFilters()
+        await filterViewModel.getQueryFilters()
 
-        var parameters = Paths.GetItemsByUserIDParameters()
+        var parameters = Paths.GetItemsParameters()
         parameters.includeItemTypes = [.movie, .series]
         parameters.isRecursive = true
         parameters.limit = 10
-        parameters.sortBy = [ItemSortBy.random.rawValue]
+        parameters.sortBy = [ItemSortBy.random]
 
-        let request = Paths.getItemsByUserID(userID: userSession.user.id, parameters: parameters)
+        let request = Paths.getItems(parameters: parameters)
         let response = try await userSession.client.send(request)
 
         self.suggestions = response.value.items ?? []

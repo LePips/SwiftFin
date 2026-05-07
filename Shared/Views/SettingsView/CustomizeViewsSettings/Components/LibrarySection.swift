@@ -36,7 +36,7 @@ extension CustomizeViewsSettings {
         private var router
 
         var body: some View {
-            Form(systemImage: "rectangle.stack.fill") {
+            Form {
 
                 Section {
                     Toggle(L10n.favorites, isOn: $showFavorites)
@@ -54,8 +54,6 @@ extension CustomizeViewsSettings {
 
                 Section {
                     Toggle(L10n.rememberSorting, isOn: $rememberLibrarySort)
-                } footer: {
-                    Text(L10n.rememberSortingFooter)
                 }
 
                 Section(L10n.layout) {
@@ -74,8 +72,6 @@ extension CustomizeViewsSettings {
 
                 Section {
                     Toggle(L10n.rememberLayout, isOn: $rememberLibraryLayout)
-                } footer: {
-                    Text(L10n.rememberLayoutFooter)
                 }
 
                 Section(L10n.letterPicker) {
@@ -83,11 +79,16 @@ extension CustomizeViewsSettings {
 
                     if letterPickerEnabled {
                         Picker(
-                            L10n.orientation,
+                            "Orientation",
                             selection: $letterPickerOrientation
                         )
                     }
                 }
+            } image: {
+                Image(systemName: "rectangle.stack.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 400)
             }
             .navigationTitle(L10n.libraries)
         }

@@ -17,9 +17,9 @@ extension EditItemElementView {
         // MARK: - Enviroment Variables
 
         @Environment(\.isEditing)
-        var isEditing
+        private var isEditing
         @Environment(\.isSelected)
-        var isSelected
+        private var isSelected
 
         // MARK: - Metadata Variables
 
@@ -61,9 +61,6 @@ extension EditItemElementView {
             HStack {
                 VStack(alignment: .leading) {
                     Text(type.getName(for: item))
-                        .foregroundStyle(
-                            isEditing ? (isSelected ? .primary : .secondary) : .primary
-                        )
                         .font(.headline)
                         .lineLimit(1)
 
@@ -74,14 +71,13 @@ extension EditItemElementView {
                             person.type?.displayTitle ?? .emptyDash,
                             value: person.role ?? .emptyDash
                         )
-                        .foregroundStyle(
-                            isEditing ? (isSelected ? .primary : .secondary) : .primary,
-                            .secondary
-                        )
                         .font(.subheadline)
                         .lineLimit(1)
                     }
                 }
+                .foregroundStyle(
+                    isEditing ? (isSelected ? .primary : .secondary) : .primary
+                )
 
                 if isEditing {
                     Spacer()
@@ -99,12 +95,14 @@ extension EditItemElementView {
 
         @ViewBuilder
         private var personImage: some View {
+            let person = (item as! BaseItemPerson)
+
             PosterImage(
-                item: (item as! BaseItemPerson),
+                item: person,
                 type: .portrait
             )
-            .posterShadow()
             .frame(width: 60)
+            .posterShadow()
             .padding(.vertical, 8)
         }
     }

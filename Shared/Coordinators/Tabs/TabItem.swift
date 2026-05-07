@@ -108,7 +108,6 @@ extension TabItem {
             title: provider.displayTitle,
             systemImage: "house.fill"
         ) {
-            // TODO: consolidate item and plain content group view?
             ContentGroupView(provider: provider)
         }
     }

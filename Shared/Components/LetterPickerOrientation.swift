@@ -10,15 +10,40 @@ import SwiftUI
 
 enum LetterPickerOrientation: String, CaseIterable, Displayable, Storable {
 
+    case disabled
     case leading
     case trailing
 
     var displayTitle: String {
         switch self {
+        case .disabled:
+            L10n.disabled
         case .leading:
             L10n.left
         case .trailing:
             L10n.right
+        }
+    }
+
+    var alignment: Alignment? {
+        switch self {
+        case .disabled:
+            nil
+        case .leading:
+            .leading
+        case .trailing:
+            .trailing
+        }
+    }
+
+    var edge: HorizontalEdge? {
+        switch self {
+        case .disabled:
+            nil
+        case .leading:
+            .leading
+        case .trailing:
+            .trailing
         }
     }
 }

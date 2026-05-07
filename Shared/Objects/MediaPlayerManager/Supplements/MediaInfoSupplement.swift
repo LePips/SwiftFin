@@ -70,7 +70,7 @@ extension MediaInfoSupplement {
                         .fill(.white)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                    Label("From Beginning", systemImage: "play.fill")
+                    Label(L10n.fromBeginning, systemImage: "play.fill")
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.black)

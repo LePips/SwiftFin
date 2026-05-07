@@ -24,6 +24,7 @@ protocol Poster: Displayable, Hashable, Identifiable, SystemImageable {
     associatedtype OverlayBody: View = EmptyView
 
     var preferredPosterDisplayType: PosterDisplayType { get }
+    var subtitle: String? { get }
 
     @ImageSourceBuilder
     func landscapeImageSources(
@@ -66,7 +67,19 @@ protocol Poster: Displayable, Hashable, Identifiable, SystemImageable {
     func posterOverlay(for displayType: PosterDisplayType) -> OverlayBody
 }
 
+extension Poster where ImageBody == Image {
+
+    @MainActor
+    func transform(image: Image) -> Image {
+        image
+    }
+}
+
 extension Poster {
+
+    var subtitle: String? {
+        nil
+    }
 
     func landscapeImageSources(
         maxWidth: CGFloat? = nil,

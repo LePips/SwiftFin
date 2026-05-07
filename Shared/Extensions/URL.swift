@@ -18,19 +18,9 @@ extension URL {
 
 extension URL {
 
-    static var documents: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-
-    static var downloads: URL {
-        documents.appendingPathComponent("Downloads")
-    }
-
-    static var tmp: URL {
-        URL(string: NSTemporaryDirectory())!
-    }
-
     static let swiftfinGithub: URL = URL(string: "https://github.com/jellyfin/Swiftfin")!
+
+    static let swiftfinGithubLicense: URL = URL(string: "https://github.com/jellyfin/Swiftfin/blob/main/LICENSE.md")!
 
     static let swiftfinGithubIssues: URL = URL(string: "https://github.com/jellyfin/Swiftfin/issues")!
 
@@ -39,6 +29,8 @@ extension URL {
     static let jellyfinDocsTasks: URL = URL(string: "https://jellyfin.org/docs/general/server/tasks")!
 
     static let jellyfinDocsUsers: URL = URL(string: "https://jellyfin.org/docs/general/server/users")!
+
+    static let jellyfinDocsTroubleshooting: URL = URL(string: "https://jellyfin.org/docs/general/administration/troubleshooting")!
 
     static let jellyfinDocsManagingUsers: URL = URL(string: "https://jellyfin.org/docs/general/server/users/adding-managing-users")!
 

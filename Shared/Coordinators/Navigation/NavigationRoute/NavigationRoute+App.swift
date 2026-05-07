@@ -11,13 +11,15 @@ import SwiftUI
 
 extension NavigationRoute {
 
-    #if os(iOS)
-    static let aboutApp = NavigationRoute(
-        id: "about-app"
-    ) {
-        AboutAppView()
+    static var aboutApp: NavigationRoute {
+        NavigationRoute(
+            id: "about-app"
+        ) {
+            AboutAppView()
+        }
     }
 
+    #if os(iOS)
     static func appIconSelector(viewModel: SettingsViewModel) -> NavigationRoute {
         NavigationRoute(
             id: "app-icon-selector"
@@ -27,24 +29,12 @@ extension NavigationRoute {
     }
     #endif
 
-    static let appSettings = NavigationRoute(
-        id: "app-settings",
-        style: .sheet
-    ) {
-        AppSettingsView()
-    }
-
-    #if os(tvOS)
-    static let hourPicker = NavigationRoute(
-        id: "hour-picker",
-        style: .fullscreen
-    ) {
-        ZStack {
-            BlurView()
-                .ignoresSafeArea()
-
-            HourMinutePicker()
+    static var appSettings: NavigationRoute {
+        NavigationRoute(
+            id: "app-settings",
+            style: .sheet
+        ) {
+            AppSettingsView()
         }
     }
-    #endif
 }

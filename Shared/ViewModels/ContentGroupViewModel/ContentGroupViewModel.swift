@@ -18,16 +18,10 @@ final class ContentGroupViewModel<Provider: ContentGroupProvider>: ViewModel {
 
     @CasePathable
     enum Action {
-        case error
         case refresh
 
         var transition: Transition {
-            switch self {
-            case .error:
-                .none
-            case .refresh:
-                .to(.refreshing, then: .content)
-            }
+            .to(.refreshing, then: .content)
         }
     }
 

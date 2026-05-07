@@ -7,13 +7,8 @@
 //
 
 import SwiftUI
-import Transmission
 
-// Status bar presentation needs to happen at this level
 struct RootView: View {
-
-    @State
-    private var isStatusBarHidden: Bool = false
 
     @StateObject
     private var rootCoordinator: RootCoordinator = .init()
@@ -24,9 +19,5 @@ struct RootView: View {
         }
         .animation(.linear(duration: 0.2), value: rootCoordinator.root.id)
         .environmentObject(rootCoordinator)
-        .prefersStatusBarHidden(isStatusBarHidden)
-        .onPreferenceChange(IsStatusBarHiddenKey.self) { newValue in
-            isStatusBarHidden = newValue
-        }
     }
 }

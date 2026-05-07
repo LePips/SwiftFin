@@ -57,7 +57,7 @@ enum PosterDisplayType: String, CaseIterable, Displayable, Storable {
         case .portrait:
             L10n.portrait
         case .square:
-            "Square"
+            L10n.square
         }
     }
 }

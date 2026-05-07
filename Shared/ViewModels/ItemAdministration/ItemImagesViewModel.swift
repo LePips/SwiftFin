@@ -208,7 +208,7 @@ final class ItemImagesViewModel: ViewModel, Stateful, Eventful {
                     }
 
                     try await deleteImage(imageInfo)
-                    try await refreshItem()
+                    try await item = item.getFullItem(userSession: userSession, sendNotification: true)
 
                     await MainActor.run {
                         self.eventSubject.send(.updated)
@@ -256,8 +256,7 @@ final class ItemImagesViewModel: ViewModel, Stateful, Eventful {
               let type = remoteImageInfo.type,
               let imageURL = remoteImageInfo.url else { return }
 
-        let parameters = Paths.DownloadRemoteImageParameters(type: type, imageURL: imageURL)
-        let imageRequest = Paths.downloadRemoteImage(itemID: itemID, parameters: parameters)
+        let imageRequest = Paths.downloadRemoteImage(itemID: itemID, type: type, imageURL: imageURL)
         try await userSession.client.send(imageRequest)
     }
 
@@ -376,28 +375,5 @@ final class ItemImagesViewModel: ViewModel, Stateful, Eventful {
         }
 
         try await getAllImages()
-    }
-
-    // MARK: - Refresh Item
-
-    private func refreshItem() async throws {
-        guard let itemID = item.id else { return }
-
-        await MainActor.run {
-            _ = backgroundStates.insert(.updating)
-        }
-
-        let request = Paths.getItem(
-            itemID: itemID,
-            userID: userSession.user.id
-        )
-
-        let response = try await userSession.client.send(request)
-
-        await MainActor.run {
-            self.item = response.value
-            _ = backgroundStates.remove(.updating)
-            Notifications[.itemMetadataDidChange].post(item)
-        }
     }
 }

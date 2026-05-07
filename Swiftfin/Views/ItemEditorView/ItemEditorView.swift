@@ -6,166 +6,119 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
+import Engine
 import Factory
 import JellyfinAPI
 import SwiftUI
 
 struct ItemEditorView: View {
 
-    @Injected(\.currentUserSession)
-    private var userSession: UserSession!
-
-    // MARK: - Router
+    @ObservedObject
+    var viewModel: ItemEditorViewModel<BaseItemDto>
 
     @Router
     private var router
 
-    @StateObject
-    private var metadataViewModel: RefreshMetadataViewModel
-
-    let item: BaseItemDto
-
-    private var canEditMetadata: Bool {
-//        userSession.user.permissions.items.canEditMetadata(item: item) == true
-        true
-    }
-
-    private var canManageSubtitles: Bool {
-        userSession.user.permissions.items.canManageSubtitles(item: item) == true
-    }
-
-    private var canManageLyrics: Bool {
-        userSession.user.permissions.items.canManageLyrics(item: item) == true
-    }
-
-    init(item: BaseItemDto) {
-        self.item = item
-        _metadataViewModel = .init(wrappedValue: .init(item: item))
-    }
-
-    // MARK: - Body
-
     var body: some View {
-        contentView
-            .navigationTitle(L10n.metadata)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarCloseButton {
-                router.dismiss()
+        ZStack {
+            switch viewModel.state {
+            case .initial:
+                contentView
+            case .error:
+                viewModel.error.map {
+                    ErrorView(error: $0)
+                }
             }
+        }
+        .navigationTitle(L10n.metadata)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarCloseButton {
+            router.dismiss()
+        }
+        .onFirstAppear {
+            viewModel.refreshItem(sendNotification: false)
+        }
+        .refreshable {
+            viewModel.refreshItem(sendNotification: false)
+        }
+        .onNotification(.didDeleteItem) { _ in
+            UIDevice.feedback(.success)
+            router.dismiss()
+        }
+        .errorMessage($viewModel.error)
     }
-
-    // MARK: - Content View
 
     private var contentView: some View {
         List {
             ListTitleSection(
-                item.name ?? L10n.unknown,
-                description: item.path
+                viewModel.item.name ?? L10n.unknown,
+                description: viewModel.item.path
             )
 
-            /// Hide metadata options to Lyric/Subtitle only users
-            if canEditMetadata {
-
-                refreshButtonView
-
-                Section(L10n.edit) {
-                    editMetadataView
-                    editTextView
+            Section(L10n.edit) {
+                if let itemKind = viewModel.item.type,
+                   BaseItemKind.itemIdentifiableCases.contains(itemKind)
+                {
+                    ChevronButton(L10n.identify) {
+                        router.route(to: .identifyItem(item: viewModel.item))
+                    }
                 }
 
-                if item.hasComponents {
-                    editComponentsView
+                ChevronButton(L10n.images) {
+                    router.route(to: .itemImages(viewModel: ItemImagesViewModel(item: viewModel.item)))
                 }
-            } /*  else if canManageSubtitles || canManageLyrics {
 
-                 // TODO: Enable when Subtitle / Lyric Editing is added
-                 Section(L10n.edit) {
-                     editTextView
-                 }
-             }*/
-        }
-    }
+                ChevronButton(L10n.metadata) {
+                    router.route(to: .editMetadata(viewModel: viewModel))
+                }
 
-    // MARK: - Refresh Button
-
-    @ViewBuilder
-    private var refreshButtonView: some View {
-        Section {
-            Button {
-                router.route(to: .itemMetadataRefresh(viewModel: metadataViewModel))
-            } label: {
-                HStack {
-                    Text(L10n.refreshMetadata)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(.primary)
-
-                    if metadataViewModel.state == .refreshing {
-                        ProgressView(value: metadataViewModel.progress)
-                            .progressViewStyle(.gauge)
-                            .transition(.opacity.combined(with: .scale).animation(.bouncy))
-                            .frame(width: 25, height: 25)
-                    } else {
-                        Image(systemName: "arrow.clockwise")
-                            .foregroundStyle(.secondary)
-                            .fontWeight(.semibold)
+                if viewModel.item.canEditSubtitles {
+                    ChevronButton(L10n.subtitles) {
+                        router.route(to: .editSubtitles(item: viewModel.item))
                     }
                 }
             }
-            .foregroundStyle(.primary, .secondary)
-            .disabled(metadataViewModel.state == .refreshing)
-        }
-    }
 
-    // MARK: - Editable Metadata Routing Buttons
+            if viewModel.item.hasComponents {
+                Section {
+                    ChevronButton(L10n.genres) {
+                        router.route(to: .editGenres(item: viewModel.item))
+                    }
 
-    @ViewBuilder
-    private var editMetadataView: some View {
+                    ChevronButton(L10n.people) {
+                        router.route(to: .editPeople(item: viewModel.item))
+                    }
 
-        if item.isIdentifiable {
-            ChevronButton(L10n.identify) {
-                router.route(to: .identifyItem(item: item))
+                    ChevronButton(L10n.tags) {
+                        router.route(to: .editTags(item: viewModel.item))
+                    }
+
+                    ChevronButton(L10n.studios) {
+                        router.route(to: .editStudios(item: viewModel.item))
+                    }
+                }
             }
-        }
-        ChevronButton(L10n.images) {
-            router.route(to: .itemImages(viewModel: ItemImagesViewModel(item: item)))
-        }
-        ChevronButton(L10n.metadata) {
-            router.route(to: .editMetadata(item: item))
-        }
-    }
 
-    // MARK: - Editable Text Routing Buttons
+            if viewModel.item.canDelete == true {
+                StateAdapter(initialValue: false) { isPresentingDeleteConfirmation in
+                    Button(L10n.delete, role: .destructive) {
+                        isPresentingDeleteConfirmation.wrappedValue = true
+                    }
+                    .buttonStyle(.primary)
+                    .confirmationDialog(
+                        L10n.deleteItemConfirmationMessage,
+                        isPresented: isPresentingDeleteConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button(
+                            L10n.confirm,
+                            role: .destructive,
+                            action: viewModel.delete
+                        )
 
-    @ViewBuilder
-    private var editTextView: some View {
-        if canManageSubtitles {
-            ChevronButton(L10n.subtitles) {
-                router.route(to: .editSubtitles(item: item))
-            }
-        }
-        if canManageLyrics {
-//          ChevronButton(L10n.lyrics) {
-//              router.route(to: \.editLyrics, item)
-//          }
-        }
-    }
-
-    // MARK: - Editable Metadata Components Routing Buttons
-
-    @ViewBuilder
-    private var editComponentsView: some View {
-        Section {
-            ChevronButton(L10n.genres) {
-                router.route(to: .editGenres(item: item))
-            }
-            ChevronButton(L10n.people) {
-                router.route(to: .editPeople(item: item))
-            }
-            ChevronButton(L10n.tags) {
-                router.route(to: .editTags(item: item))
-            }
-            ChevronButton(L10n.studios) {
-                router.route(to: .editStudios(item: item))
+                        Button(L10n.cancel, role: .cancel) {}
+                    }
+                }
             }
         }
     }

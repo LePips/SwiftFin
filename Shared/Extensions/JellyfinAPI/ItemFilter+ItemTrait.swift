@@ -28,7 +28,7 @@ extension ItemTrait: Displayable {
         case .likes:
             L10n.likedItems
         default:
-            ""
+            .empty
         }
     }
 }

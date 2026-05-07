@@ -34,6 +34,7 @@ struct NavigationDrawerLabelStyle: LabelStyle {
 
             ZStack {
                 // Capture text font if icon only
+                // swiftlint:disable:next hard_coded_display_string
                 Text(" ")
                     .hidden()
 

@@ -44,7 +44,8 @@ extension View {
     /// - Important: This does nothing on tvOS.
     @ViewBuilder
     func navigationBarCloseButton(
-        action: @escaping () -> Void
+        disabled: Bool = false,
+        _ action: @escaping () -> Void
     ) -> some View {
         self
     }
@@ -61,7 +62,16 @@ extension View {
 
     /// - Important: This does nothing on tvOS.
     @ViewBuilder
-    func prefersStatusBarHidden(_ hidden: Bool) -> some View {
+    func navigationBarFilterDrawer(
+        viewModel: FilterViewModel,
+        types: [ItemFilterType]
+    ) -> some View {
+        self
+    }
+
+    /// - Important: This does nothing on tvOS.
+    @ViewBuilder
+    func prefersStatusBarHidden(_ hidden: Bool = true) -> some View {
         self
     }
 

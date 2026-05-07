@@ -66,10 +66,24 @@ extension Backport where Content: View {
         }
     }
 
+    @ViewBuilder
+    func onChange(
+        of value: some Equatable,
+        _ action: @escaping () -> Void
+    ) -> some View {
+        if #available(iOS 17, tvOS 17, *) {
+            content.onChange(of: value, action)
+        } else {
+            content.onChange(of: value) { _ in
+                action()
+            }
+        }
+    }
+
     @MainActor
     @ViewBuilder
     func scrollClipDisabled(_ disabled: Bool = true) -> some View {
-        if #available(iOS 17, *) {
+        if #available(iOS 17, tvOS 17, *) {
             content.scrollClipDisabled(disabled)
         } else {
             content.introspect(.scrollView, on: .iOS(.v16), .tvOS(.v16)) { scrollView in

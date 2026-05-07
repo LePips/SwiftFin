@@ -8,6 +8,7 @@
 
 import Factory
 import SwiftUI
+import Transmission
 
 struct VideoPlayer: View {
 
@@ -63,7 +64,7 @@ struct VideoPlayer: View {
 
     var body: some View {
         containerView
-            .preference(key: IsStatusBarHiddenKey.self, value: !containerState.isPresentingOverlay)
+            .prefersStatusBarHidden(!containerState.isPresentingOverlay)
             .backport
             .onChange(of: audioOffset) { _, newValue in
                 if let proxy = proxy as? MediaPlayerOffsetConfigurable {
@@ -129,8 +130,7 @@ struct VideoPlayer: View {
                     router.dismiss()
                 }
             } message: {
-                // TODO: localize
-                Text("Unable to load this item.")
+                Text(L10n.unableToLoadThisItem)
             }
     }
 }

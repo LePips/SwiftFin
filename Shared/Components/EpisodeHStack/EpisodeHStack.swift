@@ -218,6 +218,16 @@ struct EpisodeHStack<Library: PagingLibrary, Header: View>: View where Library.E
                 .disabled(true)
             case let .element(episode):
                 _episode(episode)
+                    .onFirstAppear {
+                        guard !didScrollToPlayButtonItem else { return }
+                        didScrollToPlayButtonItem = true
+                        guard let playButtonItemID else { return }
+
+                        // good enough?
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            proxy.scrollTo(id: playButtonItemID, animated: false)
+                        }
+                    }
             }
         }
         .clipsToBounds(false)
@@ -226,16 +236,6 @@ struct EpisodeHStack<Library: PagingLibrary, Header: View>: View where Library.E
         .scrollBehavior(.continuousLeadingEdge)
         .proxy(proxy)
         .scrollDisabled(viewModel.state != .content)
-        .onFirstAppear {
-            guard !didScrollToPlayButtonItem else { return }
-            didScrollToPlayButtonItem = true
-            guard let playButtonItemID else { return }
-
-            // good enough?
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                proxy.scrollTo(id: playButtonItemID, animated: false)
-            }
-        }
     }
 
     var body: some View {

@@ -117,7 +117,7 @@ struct SimpleItemViewHeader: ContentGroup {
 
                 titleAndAttributes
 
-                VStack(alignment: .center, spacing: 10) {
+                VStack(alignment: .center, spacing: 5) {
                     if viewModel.item.presentPlayButton {
                         PlayButton(viewModel: viewModel)
                     }

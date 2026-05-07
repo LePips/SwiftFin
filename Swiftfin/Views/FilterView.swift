@@ -9,12 +9,7 @@
 import JellyfinAPI
 import SwiftUI
 
-// TODO: multiple filter types?
-//       - for sort order and sort by combined
 struct FilterView: View {
-
-    @Binding
-    private var selection: [AnyItemFilter]
 
     @Router
     private var router
@@ -22,51 +17,28 @@ struct FilterView: View {
     @ObservedObject
     private var viewModel: FilterViewModel
 
-    private let type: ItemFilterType
-
-    private var filterSource: [AnyItemFilter] {
-        viewModel.allFilters[keyPath: type.collectionAnyKeyPath]
-    }
-
-    @ViewBuilder
-    private var contentView: some View {
-        if filterSource.isEmpty {
-            Text(L10n.none)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        } else {
-            SelectorView(
-                selection: $selection,
-                sources: filterSource,
-                type: type.selectorType
-            )
-        }
-    }
-
-    var body: some View {
-        contentView
-            .navigationTitle(type.displayTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarCloseButton {
-                router.dismiss()
-            }
-            .topBarTrailing {
-                Button(L10n.reset) {
-                    viewModel.reset(filterType: type)
-                }
-                .environment(
-                    \.isEnabled,
-                    viewModel.isFilterSelected(type: type)
-                )
-            }
-    }
-}
-
-extension FilterView {
+    private let types: [ItemFilterType]
 
     init(
         viewModel: FilterViewModel,
         type: ItemFilterType
     ) {
+        self.viewModel = viewModel
+        self.types = [type]
+    }
+
+    init(
+        viewModel: FilterViewModel,
+        types: [ItemFilterType]
+    ) {
+        self.viewModel = viewModel
+        self.types = types
+    }
+
+    @ViewBuilder
+    private func section(for type: ItemFilterType) -> some View {
+
+        let source = viewModel.allFilters[keyPath: type.collectionAnyKeyPath]
 
         let selectionBinding: Binding<[AnyItemFilter]> = Binding {
             viewModel.currentFilters[keyPath: type.collectionAnyKeyPath]
@@ -89,10 +61,38 @@ extension FilterView {
             }
         }
 
-        self.init(
-            selection: selectionBinding,
-            viewModel: viewModel,
-            type: type
-        )
+        if source.isEmpty {
+            Text(L10n.none)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        } else {
+            SelectorView(
+                selection: selectionBinding,
+                sources: source,
+                type: type.selectorType
+            )
+        }
+    }
+
+    var body: some View {
+//        Form(systemImage: types.first?.systemImage ?? "line.3.horizontal.decrease") {
+        Form(systemImage: "line.3.horizontal.decrease") {
+            ForEach(types, id: \.self) { type in
+                section(for: type)
+            }
+        }
+//        .navigationTitle(type.displayTitle)
+        .backport
+        .toolbarTitleDisplayMode(.inline)
+        .navigationBarCloseButton {
+            router.dismiss()
+        }
+        .topBarTrailing {
+            Button(L10n.reset) {
+                for type in types {
+                    viewModel.reset(filterType: type)
+                }
+            }
+            .enabled(types.contains { viewModel.isFilterSelected(type: $0) })
+        }
     }
 }

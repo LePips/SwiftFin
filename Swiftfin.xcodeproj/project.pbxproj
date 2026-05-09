@@ -75,8 +75,6 @@
 		E14000BD2EF622AC00354A3C /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E14000BC2EF622AC00354A3C /* StatefulMacros */; };
 		E145EB4B2BE16849003BF6F3 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E145EB4A2BE16849003BF6F3 /* KeychainSwift */; };
 		E14EA1652BF70A8E00DE757A /* Mantis in Frameworks */ = {isa = PBXBuildFile; productRef = E14EA1642BF70A8E00DE757A /* Mantis */; };
-		E150C0C12BFD62FD00944FFA /* JellyfinAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E150C0C02BFD62FD00944FFA /* JellyfinAPI */; };
-		E150C0C32BFD6DA200944FFA /* JellyfinAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E150C0C22BFD6DA200944FFA /* JellyfinAPI */; };
 		E15210562946DF1B00375CC2 /* PulseLogHandler in Frameworks */ = {isa = PBXBuildFile; productRef = E15210552946DF1B00375CC2 /* PulseLogHandler */; };
 		E15210582946DF1B00375CC2 /* PulseUI in Frameworks */ = {isa = PBXBuildFile; productRef = E15210572946DF1B00375CC2 /* PulseUI */; };
 		E1523F822B132C350062821A /* CollectionHStack in Frameworks */ = {isa = PBXBuildFile; productRef = E1523F812B132C350062821A /* CollectionHStack */; };
@@ -115,6 +113,7 @@
 		E1B9743B2E86F51D008CED48 /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E1B9743A2E86F51D008CED48 /* StatefulMacros */; };
 		E1C5CB822EF61A650047C249 /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E1C5CB812EF61A650047C249 /* StatefulMacros */; };
 		E1DC9814296DC06200982F06 /* PulseLogHandler in Frameworks */ = {isa = PBXBuildFile; productRef = E1DC9813296DC06200982F06 /* PulseLogHandler */; };
+		E1E21B532FAFE19B0082212D /* JellyfinAPI in Frameworks */ = {isa = PBXBuildFile; productRef = E1E21B522FAFE19B0082212D /* JellyfinAPI */; };
 		E1E2D7BF2E3FD936004E2E5F /* Transmission in Frameworks */ = {isa = PBXBuildFile; productRef = E1E2D7BE2E3FD936004E2E5F /* Transmission */; };
 		E1FAD1C62A0375BA007F5521 /* UDPBroadcast in Frameworks */ = {isa = PBXBuildFile; productRef = E1FAD1C52A0375BA007F5521 /* UDPBroadcast */; };
 		E1FADDF12E84B63600FB310E /* StatefulMacros in Frameworks */ = {isa = PBXBuildFile; productRef = E1FADDF02E84B63600FB310E /* StatefulMacros */; };
@@ -304,7 +303,6 @@
 				E1153DD22BBB649C00424D36 /* SVGKit in Frameworks */,
 				62666E1527E501C800EC0ECD /* AVFoundation.framework in Frameworks */,
 				E13AF3BC28A0C59E009093AB /* BlurHashKit in Frameworks */,
-				E150C0C32BFD6DA200944FFA /* JellyfinAPI in Frameworks */,
 				62666E1327E501C300EC0ECD /* AudioToolbox.framework in Frameworks */,
 				E1E2D7BF2E3FD936004E2E5F /* Transmission in Frameworks */,
 				E13AF3B628A0C598009093AB /* Nuke in Frameworks */,
@@ -335,7 +333,6 @@
 				E10706102942F57D00646DAF /* Pulse in Frameworks */,
 				E176EBE92D050925009F4CF1 /* CollectionVGrid in Frameworks */,
 				E192608328D2D0DB002314B4 /* Factory in Frameworks */,
-				E150C0C12BFD62FD00944FFA /* JellyfinAPI in Frameworks */,
 				E1C5CB822EF61A650047C249 /* StatefulMacros in Frameworks */,
 				E113A2A72B5A178D009CAAAA /* CollectionHStack in Frameworks */,
 				E19138CA2E7E7FA20061E464 /* StatefulMacros in Frameworks */,
@@ -380,6 +377,7 @@
 				E15D4F052B1B0C3C00442DB8 /* PreferencesView in Frameworks */,
 				E19E6E0728A0B958005C10C8 /* NukeUI in Frameworks */,
 				E134DD2C2E7F4DC300AED027 /* StatefulMacros in Frameworks */,
+				E1E21B532FAFE19B0082212D /* JellyfinAPI in Frameworks */,
 				E1A76F1A2E8369A500A5F2C1 /* StatefulMacros in Frameworks */,
 				62666E3F27E5040300EC0ECD /* SystemConfiguration.framework in Frameworks */,
 				E1A09F752D05935100835265 /* CollectionHStack in Frameworks */,
@@ -517,7 +515,6 @@
 				E1392FEC2BA218A80034110D /* SwiftUIIntrospect */,
 				E1153DD12BBB649C00424D36 /* SVGKit */,
 				E19D41B12BF2BFA50082B8B2 /* KeychainSwift */,
-				E150C0C22BFD6DA200944FFA /* JellyfinAPI */,
 				E1155ACA2D0584A90021557A /* IdentifiedCollections */,
 				E1A09F762D05935A00835265 /* CollectionVGrid */,
 				E1A09F782D05935A00835265 /* CollectionHStack */,
@@ -583,7 +580,6 @@
 				E132D3C72BD200C10058A2DF /* CollectionVGrid */,
 				E145EB4A2BE16849003BF6F3 /* KeychainSwift */,
 				E14EA1642BF70A8E00DE757A /* Mantis */,
-				E150C0C02BFD62FD00944FFA /* JellyfinAPI */,
 				E176EBDD2D050067009F4CF1 /* IdentifiedCollections */,
 				E176EBDF2D0502A6009F4CF1 /* CollectionHStack */,
 				E176EBE22D0502C6009F4CF1 /* CollectionHStack */,
@@ -602,6 +598,7 @@
 				E19FA19F2E84F0A800F5A60D /* StatefulMacros */,
 				E1B9743A2E86F51D008CED48 /* StatefulMacros */,
 				E1C5CB812EF61A650047C249 /* StatefulMacros */,
+				E1E21B522FAFE19B0082212D /* JellyfinAPI */,
 			);
 			productName = JellyfinPlayer;
 			productReference = 5377CBF1263B596A003A4E83 /* Swiftfin iOS.app */;
@@ -705,7 +702,6 @@
 				E1153DCE2BBB634F00424D36 /* XCRemoteSwiftPackageReference "SVGKit" */,
 				E145EB492BE16849003BF6F3 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				E14EA1632BF70A8E00DE757A /* XCRemoteSwiftPackageReference "Mantis" */,
-				E150C0BF2BFD62FD00944FFA /* XCRemoteSwiftPackageReference "jellyfin-sdk-swift" */,
 				E176EBDC2D050067009F4CF1 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 				E1A09F702D05933D00835265 /* XCRemoteSwiftPackageReference "CollectionVGrid" */,
 				E1A09F732D05935100835265 /* XCRemoteSwiftPackageReference "CollectionHStack" */,
@@ -714,6 +710,7 @@
 				E164308A2E3AA9710028D4E8 /* XCRemoteSwiftPackageReference "Transmission" */,
 				E13CCE482E6C077D0070965F /* XCRemoteSwiftPackageReference "LNPopupUI" */,
 				E1C404CB2EF61D4C00959C4F /* XCRemoteSwiftPackageReference "StatefulMacro" */,
+				E1E21B512FAFE19B0082212D /* XCLocalSwiftPackageReference "../jellyfin-sdk-swift" */,
 			);
 			productRefGroup = 5377CBF2263B596A003A4E83 /* Products */;
 			projectDirPath = "";
@@ -1217,6 +1214,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = PreferencesView;
 		};
+		E1E21B512FAFE19B0082212D /* XCLocalSwiftPackageReference "../jellyfin-sdk-swift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../jellyfin-sdk-swift";
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -1306,14 +1307,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
-			};
-		};
-		E150C0BF2BFD62FD00944FFA /* XCRemoteSwiftPackageReference "jellyfin-sdk-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jellyfin/jellyfin-sdk-swift.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 1.0.0;
 			};
 		};
 		E15210522946DF1B00375CC2 /* XCRemoteSwiftPackageReference "Pulse" */ = {
@@ -1575,16 +1568,6 @@
 			package = E14EA1632BF70A8E00DE757A /* XCRemoteSwiftPackageReference "Mantis" */;
 			productName = Mantis;
 		};
-		E150C0C02BFD62FD00944FFA /* JellyfinAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E150C0BF2BFD62FD00944FFA /* XCRemoteSwiftPackageReference "jellyfin-sdk-swift" */;
-			productName = JellyfinAPI;
-		};
-		E150C0C22BFD6DA200944FFA /* JellyfinAPI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E150C0BF2BFD62FD00944FFA /* XCRemoteSwiftPackageReference "jellyfin-sdk-swift" */;
-			productName = JellyfinAPI;
-		};
 		E15210532946DF1B00375CC2 /* Pulse */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E15210522946DF1B00375CC2 /* XCRemoteSwiftPackageReference "Pulse" */;
@@ -1767,6 +1750,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E1DC9812296DC06200982F06 /* XCRemoteSwiftPackageReference "PulseLogHandler" */;
 			productName = PulseLogHandler;
+		};
+		E1E21B522FAFE19B0082212D /* JellyfinAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JellyfinAPI;
 		};
 		E1E2D7BE2E3FD936004E2E5F /* Transmission */ = {
 			isa = XCSwiftPackageProductDependency;

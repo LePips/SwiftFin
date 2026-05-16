@@ -149,12 +149,17 @@ struct CustomizeSettingsView: View {
                     isPresented.wrappedValue = true
                 } label: {
                     LabeledContent {
-                        if maxNextUp > 0 {
-                            let duration = Duration.seconds(TimeInterval(maxNextUp))
-                            return Text(duration, format: .units(allowed: [.days], width: .abbreviated))
-                        } else {
-                            return Text(L10n.disabled)
+                        Group {
+                            if maxNextUp > 0 {
+                                Text(
+                                    Duration.seconds(maxNextUp),
+                                    format: .units(allowed: [.days], width: .abbreviated)
+                                )
+                            } else {
+                                Text(L10n.disabled)
+                            }
                         }
+                        .foregroundStyle(.secondary)
                     } label: {
                         Text(L10n.nextUpDays)
                     }

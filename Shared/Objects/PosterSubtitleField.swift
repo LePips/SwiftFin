@@ -9,6 +9,7 @@
 import JellyfinAPI
 
 enum PosterSubtitleField: String, CaseIterable, Displayable, Storable {
+
     case none
     case year
     case runtime

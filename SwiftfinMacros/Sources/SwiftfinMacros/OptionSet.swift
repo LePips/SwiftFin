@@ -8,7 +8,6 @@
 
 /// Generates an option set from a nested `Options: Int` enum.
 /// Cases use sequential bit positions unless given explicit values.
-/// Append new cases to preserve saved values.
 @attached(member, names: named(RawValue), named(rawValue), named(init), arbitrary)
 @attached(extension, conformances: Swift.OptionSet)
 public macro OptionSet<RawValue: FixedWidthInteger>() = #externalMacro(module: "SwiftfinMacrosPlugin", type: "OptionSetMacro")

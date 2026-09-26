@@ -6,7 +6,7 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
-/// Generates `init(from:)` and `CodingKeys`, keeping defaults for missing or null values.
-/// Properties need explicit types; properties with defaults must use `var`.
+/// Generates Codable conformance for types that declare a default value. Useful for
+/// types that are partially encoded, like if new properties are added over time.
 @attached(extension, names: named(CodingKeys), named(init))
 public macro DefaultDecodable() = #externalMacro(module: "SwiftfinMacrosPlugin", type: "DefaultDecodableMacro")

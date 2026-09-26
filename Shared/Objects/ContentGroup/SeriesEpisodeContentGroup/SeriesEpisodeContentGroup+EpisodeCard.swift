@@ -154,6 +154,7 @@ extension SeriesEpisodeContentGroup {
             self.artwork = artwork()
         }
 
+        @ViewBuilder
         private func contextMenuPreview(for item: BaseItemDto) -> some View {
             VStack(alignment: .leading) {
                 PosterImage(

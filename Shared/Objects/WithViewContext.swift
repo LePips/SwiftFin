@@ -22,7 +22,6 @@ struct ViewContext {
         case isOverComplexContent
         case isInParent
         case isInResume
-        case withConstrainedSize
         case isBackdrop
     }
 }

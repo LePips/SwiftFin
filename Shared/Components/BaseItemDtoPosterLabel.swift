@@ -13,7 +13,6 @@ struct BaseItemDtoPosterLabel: View {
 
     @Environment(\.posterConfiguration)
     private var posterConfiguration
-
     @Environment(\.posterDisplayType)
     private var posterDisplayType
 

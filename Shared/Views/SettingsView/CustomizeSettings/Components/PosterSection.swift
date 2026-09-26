@@ -129,12 +129,7 @@ extension CustomizeSettingsView {
                 Section(L10n.labels) {
                     Toggle(L10n.showTitle, isOn: $posterConfiguration.isTitlePresented)
 
-                    #if os(tvOS)
-                    ListRowMenu(L10n.subtitle, selection: $posterConfiguration.subtitleField)
-                    #else
-                    Picker(L10n.subtitle, selection: $posterConfiguration.subtitleField)
-                        .pickerStyle(.menu)
-                    #endif
+                    PlatformPicker(L10n.subtitle, selection: $posterConfiguration.subtitleField)
                 }
 
                 Section(L10n.indicators) {

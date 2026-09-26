@@ -11,20 +11,14 @@ import JellyfinAPI
 
 extension BaseItemDto {
 
-    func posterTitle(using field: PosterSubtitleField) -> String {
-        // A parent title is useful only when the subtitle identifies its child.
-        guard posterSubtitle(using: field) != nil else { return displayTitle }
-
-        switch (type, field) {
-        case (.season, .title):
-            return parentTitle ?? displayTitle
-        default:
-            return displayTitle
-        }
-    }
-
     func posterSubtitle(using field: PosterSubtitleField) -> String? {
-        let value = type == .person ? subtitle : posterSubtitleValue(for: field)
+        let value: String? = if let extraType {
+            extraType.displayTitle
+        } else if type == .person {
+            subtitle
+        } else {
+            posterSubtitleValue(for: field)
+        }
         guard let value = value?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else { return nil }
         return value
     }
@@ -54,13 +48,6 @@ extension BaseItemDto {
             return genres?.first
         case .studio:
             return studios?.first?.name
-        case .episodeNumber:
-            return seasonEpisodeLabel
-        case .title:
-            return name
-        case .extraType:
-            guard let extraType, extraType != .unknown else { return nil }
-            return extraType.displayTitle
         }
     }
 

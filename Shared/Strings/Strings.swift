@@ -1330,10 +1330,6 @@ internal enum L10n {
   internal static func posterCriticScore(_ p1: Any) -> String {
     return L10n.tr("Localizable", "posterCriticScore", String(describing: p1), fallback: "%@%% critics")
   }
-  /// Season and episode
-  internal static let posterEpisodeNumber = L10n.tr("Localizable", "posterEpisodeNumber", fallback: "Season and episode")
-  /// Extra type
-  internal static let posterExtraType = L10n.tr("Localizable", "posterExtraType", fallback: "Extra type")
   /// Posters
   internal static let posters = L10n.tr("Localizable", "posters", fallback: "Posters")
   /// Preferred language

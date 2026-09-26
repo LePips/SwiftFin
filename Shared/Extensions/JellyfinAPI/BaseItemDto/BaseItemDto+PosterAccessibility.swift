@@ -77,11 +77,15 @@ extension BaseItemDto {
     }
 
     private func posterAccessibilitySubtitle(using field: PosterSubtitleField) -> String? {
-        guard type != .episode, type != .person, let subtitle = posterSubtitle(using: field) else { return nil }
+        guard type != .person, let subtitle = posterSubtitle(using: field) else { return nil }
+
+        if extraType != nil {
+            return subtitle
+        }
 
         switch field {
-        case .none, .title, .episodeNumber, .runtime:
-            // Identity and runtime are always spoken, even with visual labels hidden.
+        case .none, .runtime:
+            // Runtime is always spoken, even with visual labels hidden.
             return nil
         case .communityRating:
             guard let communityRating else { return nil }

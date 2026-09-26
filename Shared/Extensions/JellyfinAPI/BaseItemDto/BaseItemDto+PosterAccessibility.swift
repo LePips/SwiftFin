@@ -21,6 +21,10 @@ extension BaseItemDto {
 
         details.append(contentsOf: playbackItem.posterAccessibilityPlaybackState)
 
+        if isRecording {
+            details.append(L10n.recording)
+        }
+
         if userData?.isFavorite == true {
             details.append(L10n.favorited)
         }

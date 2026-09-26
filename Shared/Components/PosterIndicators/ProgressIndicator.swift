@@ -17,7 +17,6 @@ struct ProgressIndicator: View {
     let title: String
     let progress: Double
     let posterDisplayType: PosterDisplayType
-    let isRecording: Bool
 
     private let indicators: [QuadrantItem]
 
@@ -25,13 +24,11 @@ struct ProgressIndicator: View {
         title: String,
         progress: Double,
         posterDisplayType: PosterDisplayType,
-        isRecording: Bool = false,
         @ArrayBuilder<QuadrantItem> indicators: () -> [QuadrantItem]
     ) {
         self.title = title
         self.progress = progress
         self.posterDisplayType = posterDisplayType
-        self.isRecording = isRecording
         self.indicators = indicators()
     }
 
@@ -43,6 +40,7 @@ struct ProgressIndicator: View {
         progress.isFinite ? clamp(progress, min: 0, max: 1) : 0
     }
 
+    @ViewBuilder
     private var progressBar: some View {
         ProgressView(value: normalizedProgress)
             .progressViewStyle(.playback)
@@ -53,6 +51,7 @@ struct ProgressIndicator: View {
             .accessibilityHidden(true)
     }
 
+    @ViewBuilder
     private var compactProgressBar: some View {
         Rectangle()
             .fill(accentColor)
@@ -62,36 +61,29 @@ struct ProgressIndicator: View {
             .accessibilityHidden(true)
     }
 
+    @ViewBuilder
     private var runtime: some View {
-        HStack(spacing: 5) {
-            Text(title)
-
-            if isRecording {
-                Image(systemName: "circle.fill")
-                    .font(.system(.caption2, design: .rounded))
-                    .foregroundStyle(.red)
-                    .imageScale(.small)
-                    .accessibilityLabel(L10n.recording)
+        Text(title)
+            .font(.system(.footnote, design: .rounded, weight: .semibold))
+            .monospacedDigit()
+            .foregroundStyle(.white)
+            .lineLimit(1)
+            .padding(.horizontal, UIDevice.isTV ? 12 : 8)
+            .padding(.vertical, UIDevice.isTV ? 5 : 3)
+            .background(.black.opacity(0.72), in: Capsule())
+            .overlay {
+                Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 0.5)
             }
-        }
-        .font(.system(.footnote, design: .rounded, weight: .semibold))
-        .monospacedDigit()
-        .foregroundStyle(.white)
-        .lineLimit(1)
-        .padding(.horizontal, UIDevice.isTV ? 12 : 8)
-        .padding(.vertical, UIDevice.isTV ? 5 : 3)
-        .background(.black.opacity(0.72), in: Capsule())
-        .overlay {
-            Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 0.5)
-        }
     }
 
+    @ViewBuilder
     private var indicatorTrack: some View {
         Quadrant(.bottomTrailing, isFloating: true) {
             indicators
         }
     }
 
+    @ViewBuilder
     private func landscapeView(showsIndicators: Bool) -> some View {
         VStack(spacing: inset) {
             HStack(spacing: inset) {
@@ -109,6 +101,7 @@ struct ProgressIndicator: View {
         }
     }
 
+    @ViewBuilder
     private func compactView(showsIndicators: Bool) -> some View {
         VStack(alignment: .trailing, spacing: inset) {
             if showsIndicators {

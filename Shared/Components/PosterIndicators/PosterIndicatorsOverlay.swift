@@ -62,6 +62,13 @@ struct PosterIndicatorsOverlay: View {
 
     @ArrayBuilder<QuadrantItem>
     private var bottomIndicators: [QuadrantItem] {
+        if item.isRecording {
+            QuadrantItem(color: .red) {
+                Text(Image(systemName: "record.circle"))
+                    .accessibilityLabel(L10n.recording)
+            }
+        }
+
         if showsFavoriteIndicator {
             QuadrantItem(color: .pink) {
                 Text(Image(systemName: "heart.fill"))
@@ -102,8 +109,7 @@ struct PosterIndicatorsOverlay: View {
                 ProgressIndicator(
                     title: item.progressLabel ?? "",
                     progress: item.progressPercentage ?? 0,
-                    posterDisplayType: posterDisplayType,
-                    isRecording: item.isRecording
+                    posterDisplayType: posterDisplayType
                 ) {
                     bottomIndicators
                 }

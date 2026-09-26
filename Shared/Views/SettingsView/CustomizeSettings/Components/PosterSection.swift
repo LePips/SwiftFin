@@ -19,6 +19,7 @@ extension CustomizeSettingsView {
             case rewatching
             case played
             case unplayed
+            case recording
 
             var displayTitle: String {
                 switch self {
@@ -30,6 +31,8 @@ extension CustomizeSettingsView {
                     L10n.played
                 case .unplayed:
                     L10n.unplayed
+                case .recording:
+                    L10n.recording
                 }
             }
         }
@@ -67,6 +70,14 @@ extension CustomizeSettingsView {
             item.userData?.isPlayed = previewItemState == .played || previewItemState == .rewatching
             item.userData?.playbackPositionTicks = isInProgress ? Duration.seconds(600).ticks : 0
             item.userData?.playedPercentage = isInProgress ? 100 / 3 : 0
+
+            if previewItemState == .recording {
+                item.type = .program
+                item.startDate = .now.addingTimeInterval(-600)
+                item.endDate = .now.addingTimeInterval(1200)
+                item.timerID = "preview-recording"
+                item.status = RecordingStatus.inProgress.rawValue
+            }
 
             return item
         }

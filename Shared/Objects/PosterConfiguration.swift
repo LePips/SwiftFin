@@ -6,32 +6,14 @@
 // Copyright (c) 2026 Jellyfin & Jellyfin Contributors
 //
 
-import Foundation
-
+@DefaultDecodable
 struct PosterConfiguration: Hashable, Storable, WithDefaultValue {
 
-    var indicators: PosterIndicator
-    var unplayedStyle: UnplayedIndicatorType
-    var useSeriesLandscapeBackdrop: Bool
+    var indicators: PosterIndicator = .all
+    var unplayedStyle: UnplayedIndicatorType = .indicator
+    var useSeriesLandscapeBackdrop: Bool = true
     var subtitleField: PosterSubtitleField = .none
     var isTitlePresented: Bool = true
 
-    static let `default`: PosterConfiguration = .init(
-        indicators: .all,
-        unplayedStyle: .indicator,
-        useSeriesLandscapeBackdrop: true
-    )
-}
-
-extension PosterConfiguration {
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.indicators = try container.decode(PosterIndicator.self, forKey: .indicators)
-        self.isTitlePresented = try container.decodeIfPresent(Bool.self, forKey: .isTitlePresented) ?? true
-        self.unplayedStyle = try container.decode(UnplayedIndicatorType.self, forKey: .unplayedStyle)
-        self.useSeriesLandscapeBackdrop = try container.decode(Bool.self, forKey: .useSeriesLandscapeBackdrop)
-        let subtitleField = try container.decodeIfPresent(String.self, forKey: .subtitleField)
-        self.subtitleField = subtitleField.flatMap(PosterSubtitleField.init(rawValue:)) ?? .none
-    }
+    static let `default` = PosterConfiguration()
 }

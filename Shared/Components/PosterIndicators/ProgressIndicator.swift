@@ -17,6 +17,7 @@ struct ProgressIndicator: View {
     let title: String
     let progress: Double
     let posterDisplayType: PosterDisplayType
+    let isRecording: Bool
 
     private let indicators: [QuadrantItem]
 
@@ -24,11 +25,13 @@ struct ProgressIndicator: View {
         title: String,
         progress: Double,
         posterDisplayType: PosterDisplayType,
+        isRecording: Bool = false,
         @ArrayBuilder<QuadrantItem> indicators: () -> [QuadrantItem]
     ) {
         self.title = title
         self.progress = progress
         self.posterDisplayType = posterDisplayType
+        self.isRecording = isRecording
         self.indicators = indicators()
     }
 
@@ -60,17 +63,27 @@ struct ProgressIndicator: View {
     }
 
     private var runtime: some View {
-        Text(title)
-            .font(.system(.footnote, design: .rounded, weight: .semibold))
-            .monospacedDigit()
-            .foregroundStyle(.white)
-            .lineLimit(1)
-            .padding(.horizontal, UIDevice.isTV ? 12 : 8)
-            .padding(.vertical, UIDevice.isTV ? 5 : 3)
-            .background(.black.opacity(0.72), in: Capsule())
-            .overlay {
-                Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 0.5)
+        HStack(spacing: 5) {
+            Text(title)
+
+            if isRecording {
+                Image(systemName: "circle.fill")
+                    .font(.system(.caption2, design: .rounded))
+                    .foregroundStyle(.red)
+                    .imageScale(.small)
+                    .accessibilityLabel(L10n.recording)
             }
+        }
+        .font(.system(.footnote, design: .rounded, weight: .semibold))
+        .monospacedDigit()
+        .foregroundStyle(.white)
+        .lineLimit(1)
+        .padding(.horizontal, UIDevice.isTV ? 12 : 8)
+        .padding(.vertical, UIDevice.isTV ? 5 : 3)
+        .background(.black.opacity(0.72), in: Capsule())
+        .overlay {
+            Capsule().strokeBorder(.white.opacity(0.18), lineWidth: 0.5)
+        }
     }
 
     private var indicatorTrack: some View {
